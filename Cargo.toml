@@ -1,0 +1,32 @@
+[package]
+name = "most_frequent_prime_3044"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+leetcode_lib = { path = "./lib" }
+
+[[bin]]
+name = "sum_two_numbers"
+path = "sum_two_numbers/src/main.rs"
+
+[[bin]]
+name = "most_frequent_prime_3044"
+path = "most_frequent_prime_3044/src/main.rs"
+
+[[bin]]
+name = "integer_to_roman_12"
+path = "integer_to_roman_12/src/main.rs"
+
+[[bin]]
+name = "maximum_ascending_subarray_sum_1800"
+path = "maximum_ascending_subarray_sum_1800/src/main.rs"
+
+[workspace]
+members = [
+    "lib",
+    "most_frequent_prime_3044",
+    "sum_two_numbers",
+    "integer_to_roman_12",
+    "maximum_ascending_subarray_sum_1800"
+] 

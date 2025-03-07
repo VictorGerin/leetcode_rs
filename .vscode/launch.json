@@ -1,0 +1,39 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [        
+        {
+            "type": "cppvsdbg",
+            "preLaunchTask": "rust: cargo build",
+            "request": "launch",
+            "name": "debug windows",
+            "cwd": "${workspaceFolder}",
+            "program": "${workspaceFolder}\\target\\debug\\integer_to_roman_12.exe",
+            "args": ["<", "${workspaceFolder}/integer_to_roman_12/src/input.txt"],
+            "console": "internalConsole",
+            "sourceFileMap": {},
+            "windows": {}
+      },
+      {
+          "type": "lldb",
+          "request": "launch",
+          "name": "debug linux",
+          "cargo": {
+              "args": [
+                  "build",
+                  "--bin=integer_to_roman_12",
+                  "--package=integer_to_roman_12"
+              ],
+              "filter": {
+                  "name": "integer_to_roman_12",
+                  "kind": "bin"
+              }
+          },
+          "stdio": "${workspaceFolder}/integer_to_roman_12/src/input.txt",
+          "args": [],
+          "cwd": "${workspaceFolder}"
+      },
+    ]
+}
