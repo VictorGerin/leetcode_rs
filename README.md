@@ -36,7 +36,7 @@ cargo run --bin [problem-name]
 
 For example:
 ```bash
-cargo run --bin two-sum
+cargo run --bin sum_two_numbers
 ```
 
 ## ⛏️ Built Using
@@ -48,16 +48,24 @@ cargo run --bin two-sum
 
 ```
 .
-├── src/           # Source directory
-│   ├── parser/    # Input parsing utilities
-│   └── solutions/ # LeetCode problem solutions
-├── tests/         # Test cases
-└── Cargo.toml     # Project dependencies and configuration
+├── lib/                           # Shared library code
+│   ├── src/
+│   │   ├── parser/               # Input parsing utilities
+│   │   ├── data_structures/      # Common data structures
+│   │   └── lib.rs               # Library root
+│   └── Cargo.toml               # Library dependencies
+├── [problem-name]/               # Individual problem solutions
+│   ├── src/                     # Problem-specific code
+│   └── Cargo.toml              # Problem-specific dependencies
+├── Cargo.toml                    # Workspace configuration
+└── Cargo.lock                    # Dependency lock file
 ```
+
+Each LeetCode problem is organized as a separate package in the workspace, allowing for isolated development and testing. The shared library (`lib`) contains common utilities and data structures used across different problems.
 
 ## ✍️ Authors
 
-- Your Name - Initial work
+- Victor Lacerda - Initial work
 
 ## 📝 License
 
