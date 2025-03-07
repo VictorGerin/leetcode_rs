@@ -18,7 +18,7 @@ This project contains solutions to various LeetCode problems implemented in Rust
 1. Clone the repository:
 ```bash
 git clone https://github.com/VictorGerin/leetcode_rs
-cd leetcode-workspace
+cd leetcode_rs
 ```
 
 2. Build the project:
