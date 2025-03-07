@@ -1,114 +1,72 @@
-<p align="center">
-  <a href="" rel="noopener">
- <img width=200px height=200px src="https://i.imgur.com/6wj0hh6.jpg" alt="Project logo"></a>
-</p>
+# LeetCode Workspace in Rust
 
-<h3 align="center">Project Title</h3>
+A collection of LeetCode problem solutions implemented in Rust, featuring a custom parser and solution framework.
 
-<div align="center">
+## 🧐 About
 
-[![Status](https://img.shields.io/badge/status-active-success.svg)]()
-[![GitHub Issues](https://img.shields.io/github/issues/kylelobo/The-Documentation-Compendium.svg)](https://github.com/kylelobo/The-Documentation-Compendium/issues)
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/kylelobo/The-Documentation-Compendium.svg)](https://github.com/kylelobo/The-Documentation-Compendium/pulls)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
+This project contains solutions to various LeetCode problems implemented in Rust. It includes a custom parser that helps handle LeetCode's input formats and test cases, making it easier to test and verify solutions locally.
 
-</div>
-
----
-
-<p align="center"> Few lines describing your project.
-    <br> 
-</p>
-
-## 📝 Table of Contents
-
-- [About](#about)
-- [Getting Started](#getting_started)
-- [Deployment](#deployment)
-- [Usage](#usage)
-- [Built Using](#built_using)
-- [TODO](../TODO.md)
-- [Contributing](../CONTRIBUTING.md)
-- [Authors](#authors)
-- [Acknowledgments](#acknowledgement)
-
-## 🧐 About <a name = "about"></a>
-
-Write about 1-2 paragraphs describing the purpose of your project.
-
-## 🏁 Getting Started <a name = "getting_started"></a>
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.
+## 🏁 Getting Started
 
 ### Prerequisites
 
-What things you need to install the software and how to install them.
+- Rust (latest stable version)
+- Cargo (comes with Rust)
 
-```
-Give examples
-```
+### Installation
 
-### Installing
-
-A step by step series of examples that tell you how to get a development env running.
-
-Say what the step will be
-
-```
-Give the example
+1. Clone the repository:
+```bash
+git clone [your-repository-url]
+cd leetcode-workspace
 ```
 
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo.
-
-## 🔧 Running the tests <a name = "tests"></a>
-
-Explain how to run the automated tests for this system.
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
+2. Build the project:
+```bash
+cargo build
 ```
 
-### And coding style tests
+## 🎈 Usage
 
-Explain what these tests test and why
+To run a specific solution:
+
+```bash
+cargo run --bin [problem-name]
+```
+
+For example:
+```bash
+cargo run --bin sum_two_numbers
+```
+
+## ⛏️ Built Using
+
+- [Rust](https://www.rust-lang.org/) - Programming Language
+- Cargo - Dependency Management
+
+## Project Structure
 
 ```
-Give an example
+.
+├── lib/                           # Shared library code
+│   ├── src/
+│   │   ├── parser/               # Input parsing utilities
+│   │   ├── data_structures/      # Common data structures
+│   │   └── lib.rs               # Library root
+│   └── Cargo.toml               # Library dependencies
+├── [problem-name]/               # Individual problem solutions
+│   ├── src/                     # Problem-specific code
+│   └── Cargo.toml              # Problem-specific dependencies
+├── Cargo.toml                    # Workspace configuration
+└── Cargo.lock                    # Dependency lock file
 ```
 
-## 🎈 Usage <a name="usage"></a>
+Each LeetCode problem is organized as a separate package in the workspace, allowing for isolated development and testing. The shared library (`lib`) contains common utilities and data structures used across different problems.
 
-Add notes about how to use the system.
+## ✍️ Authors
 
-## 🚀 Deployment <a name = "deployment"></a>
+- Victor Lacerda - Initial work
 
-Add additional notes about how to deploy this on a live system.
+## 📝 License
 
-## ⛏️ Built Using <a name = "built_using"></a>
-
-- [MongoDB](https://www.mongodb.com/) - Database
-- [Express](https://expressjs.com/) - Server Framework
-- [VueJs](https://vuejs.org/) - Web Framework
-- [NodeJs](https://nodejs.org/en/) - Server Environment
-
-## ✍️ Authors <a name = "authors"></a>
-
-- [@kylelobo](https://github.com/kylelobo) - Idea & Initial work
-
-See also the list of [contributors](https://github.com/kylelobo/The-Documentation-Compendium/contributors) who participated in this project.
-
-## 🎉 Acknowledgements <a name = "acknowledgement"></a>
-
-- Hat tip to anyone whose code was used
-- Inspiration
-- References
+This project is licensed under the MIT License.
