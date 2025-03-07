@@ -1,0 +1,5 @@
+"abpcplea" ["ale","apple","monkey","plea"] "apple"
+"abpcplea" ["a","b","c"] "a"
+"abce" ["abe","abc"] "abc"
+"bab" ["ba","ab","a","b"] "ab"
+"aewfafwafjlwajflwajflwafj" ["apple","ewaf","awefawfwaf","awef","awefe","ewafeffewafewf"] "ewaf" 

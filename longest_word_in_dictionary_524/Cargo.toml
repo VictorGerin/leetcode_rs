@@ -1,0 +1,7 @@
+[package]
+name = "longest_word_in_dictionary_524"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+leetcode_lib = { path = "../lib" }

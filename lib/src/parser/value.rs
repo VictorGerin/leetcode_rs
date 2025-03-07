@@ -46,4 +46,14 @@ impl Value {
             _ => None
         }
     }
+
+    pub fn as_vec<F, T, U>(&self, f: F) -> Option<U>
+    where
+        F: Fn(&Value) -> U,
+    {
+        match self {
+            Value::Vec(v) => Some(v.iter().map(|item| f(item)).collect::<T>()),
+            _ => None,
+        }
+    }
 } 

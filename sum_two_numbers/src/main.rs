@@ -4,12 +4,11 @@ use solution::Solution;
 
 fn main() -> Result<(), String> {
     let chars = read_input("sum_two_numbers/src/input.txt")?;
-
-    let values: Vec<Value> = ValueIterator::new(chars)
-        .collect::<Result<_, ProcessInputError>>()
-        .map_err(|e| e.to_string())?;
-
-    values.chunks_exact(3)
+    
+    ValueIterator::new(chars)
+        .collect::<Result<Vec<Value>, ProcessInputError>>()
+        .map_err(|e| e.to_string())?
+        .chunks_exact(3)
         .try_for_each(|caso_teste| -> Result<(), String> {
             let a = caso_teste[0].as_int().ok_or(format!("Invalid input for a: {:?}", caso_teste[0]))?;
             let b = caso_teste[1].as_int().ok_or(format!("Invalid input for b: {:?}", caso_teste[1]))?;

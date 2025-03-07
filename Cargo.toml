@@ -26,6 +26,10 @@ path = "maximum_ascending_subarray_sum_1800/src/main.rs"
 name = "sort_array_912"
 path = "sort_array_912/src/main.rs"
 
+[[bin]]
+name = "longest_word_in_dictionary_524"
+path = "longest_word_in_dictionary_524/src/main.rs"
+
 [workspace]
 members = [
     "lib",
@@ -33,5 +37,6 @@ members = [
     "sum_two_numbers",
     "integer_to_roman_12",
     "maximum_ascending_subarray_sum_1800",
-    "sort_array_912"
+    "sort_array_912",
+    "longest_word_in_dictionary_524"
 ] 
