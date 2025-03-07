@@ -22,11 +22,16 @@ path = "integer_to_roman_12/src/main.rs"
 name = "maximum_ascending_subarray_sum_1800"
 path = "maximum_ascending_subarray_sum_1800/src/main.rs"
 
+[[bin]]
+name = "sort_array_912"
+path = "sort_array_912/src/main.rs"
+
 [workspace]
 members = [
     "lib",
     "most_frequent_prime_3044",
     "sum_two_numbers",
     "integer_to_roman_12",
-    "maximum_ascending_subarray_sum_1800"
+    "maximum_ascending_subarray_sum_1800",
+    "sort_array_912"
 ] 
