@@ -12,14 +12,11 @@ fn main() -> Result<(), String> {
 
     values.chunks_exact(2)
         .try_for_each(|caso_teste| -> Result<(), String> {
-            let nums = match &caso_teste[0] {
-                Value::Vec(v) => v.iter()
-                    .map(|val| val.as_int().ok_or_else(|| format!("Expected integer, got {:?}", val)))
-                    .collect::<Result<Vec<i32>, String>>()?,
-                _ => return Err(format!("Expected array, got {:?}", caso_teste[0]))
-            };
+            let nums = caso_teste[0].clone().as_vec::<_, _, Result<Vec<i32>, String>>(|v| {
+                v.as_int().ok_or(format!("Expected integer"))
+            }).ok_or(format!("Expected array, got {:?}", caso_teste[0]))??;
 
-            let expected = caso_teste[1].as_int()
+            let expected = caso_teste[1].clone().as_int()
                 .ok_or_else(|| format!("Expected integer, got {:?}", caso_teste[1]))?;
 
             let result = Solution::max_ascending_sum(nums.clone());

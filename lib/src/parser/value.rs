@@ -9,50 +9,51 @@ pub enum Value {
 }
 
 impl Value {
-    pub fn as_int(&self) -> Option<i32> {
+    pub fn as_int(self) -> Option<i32> {
         match self {
-            Value::Int(v) => Some(*v as i32),
-            Value::Double(v) => Some(*v as i32),
+            Value::Int(v) => Some(v as i32),
+            Value::Double(v) => Some(v as i32),
             _ => None
         }
     }
     
-    pub fn as_double(&self) -> Option<f64> {
+    pub fn as_double(self) -> Option<f64> {
         match self {
-            Value::Int(v) => Some(*v as f64),
-            Value::Double(v) => Some(*v as f64),
+            Value::Int(v) => Some(v as f64),
+            Value::Double(v) => Some(v as f64),
             _ => None
         }
     }
 
-    pub fn as_string<'a>(&'a self) -> Option<&'a str> {
+    pub fn as_string(self) -> Option<String> {
         match self {
-            Value::Str(s) => Some(s.as_str()),
+            Value::Str(s) => Some(s),
             _ => None
         }
     }
 
-    pub fn as_bool(&self) -> Option<bool> {
+    pub fn as_bool(self) -> Option<bool> {
         match self {
-            Value::Bool(b) => Some(*b),
+            Value::Bool(b) => Some(b),
             _ => None
         }
     }
 
-    pub fn as_long(&self) -> Option<i64> {
+    pub fn as_long(self) -> Option<i64> {
         match self {
-            Value::Int(v) => Some(*v as i64),
-            Value::Double(v) => Some(*v as i64),
+            Value::Int(v) => Some(v as i64),
+            Value::Double(v) => Some(v as i64),
             _ => None
         }
     }
 
-    pub fn as_vec<F, T, U>(&self, f: F) -> Option<U>
+    pub fn as_vec<F, T, U>(self, f: F) -> Option<U>
     where
-        F: Fn(&Value) -> U,
+        F: Fn(Value) -> T,
+        U: std::iter::FromIterator<T>
     {
         match self {
-            Value::Vec(v) => Some(v.iter().map(|item| f(item)).collect::<T>()),
+            Value::Vec(v) => Some(v.into_iter().map(f).collect::<U>()),
             _ => None,
         }
     }
