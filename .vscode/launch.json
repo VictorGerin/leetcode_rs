@@ -10,8 +10,8 @@
             "request": "launch",
             "name": "debug windows",
             "cwd": "${workspaceFolder}",
-            "program": "${workspaceFolder}\\target\\debug\\integer_to_roman_12.exe",
-            "args": ["<", "${workspaceFolder}/integer_to_roman_12/src/input.txt"],
+            "program": "${workspaceFolder}\\target\\debug\\sum_two_numbers.exe",
+            "args": ["<", "${workspaceFolder}/sum_two_numbers/src/input.txt"],
             "console": "internalConsole",
             "sourceFileMap": {},
             "windows": {}
@@ -23,15 +23,15 @@
           "cargo": {
               "args": [
                   "build",
-                  "--bin=integer_to_roman_12",
-                  "--package=integer_to_roman_12"
+                  "--bin=sum_two_numbers",
+                  "--package=sum_two_numbers"
               ],
               "filter": {
-                  "name": "integer_to_roman_12",
+                  "name": "sum_two_numbers",
                   "kind": "bin"
               }
           },
-          "stdio": "${workspaceFolder}/integer_to_roman_12/src/input.txt",
+          "stdio": "${workspaceFolder}/sum_two_numbers/src/input.txt",
           "args": [],
           "cwd": "${workspaceFolder}"
       },

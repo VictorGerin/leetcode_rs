@@ -2,7 +2,7 @@ use criterion::{black_box, criterion_group, criterion_main, Criterion};
 
 // Import the Solution struct directly from the crate's root
 mod solution {
-    include!("../src/solution/mod.rs");
+    include!("../src/solution/solution.rs");
 }
 use solution::Solution;
 

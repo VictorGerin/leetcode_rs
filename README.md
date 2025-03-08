@@ -31,12 +31,12 @@ cargo build
 To run a specific solution:
 
 ```bash
-cargo run --bin [problem-name]
+cargo test --package [problem-name]
 ```
 
 For example:
 ```bash
-cargo run --bin sum_two_numbers
+cargo test --package sum_two_numbers
 ```
 
 ## ⛏️ Built Using
@@ -48,17 +48,24 @@ cargo run --bin sum_two_numbers
 
 ```
 .
-├── lib/                           # Shared library code
-│   ├── src/
-│   │   ├── parser/               # Input parsing utilities
-│   │   ├── data_structures/      # Common data structures
-│   │   └── lib.rs               # Library root
-│   └── Cargo.toml               # Library dependencies
-├── [problem-name]/               # Individual problem solutions
-│   ├── src/                     # Problem-specific code
+├── lib/                        # Shared library code
+│   ├── src/                    #
+│   │   ├── parser/             # Input parsing utilities
+│   │   ├── data_structures/    # Common data structures
+│   │   └── lib.rs              # Library root
+│   └── Cargo.toml              # Library dependencies
+├── [problem-name]/             # Individual problem solutions
+│   ├── src/                    # Problem-specific code
+│   │   ├── lib.rs              # no use
+│   │   ├── main.rs             # no use
+│   │   └── solution/           # folder with the solution
+│   │       ├── mod.rs          # mod
+│   │       ├── solution.rs     # The leetcode solution
+│   │       └── test.rs         # test file that runs input.txt
+│   ├── input.txt               # Problem-specific test cases
 │   └── Cargo.toml              # Problem-specific dependencies
-├── Cargo.toml                    # Workspace configuration
-└── Cargo.lock                    # Dependency lock file
+├── Cargo.toml                  # Workspace configuration
+└── Cargo.lock                  # Dependency lock file
 ```
 
 Each LeetCode problem is organized as a separate package in the workspace, allowing for isolated development and testing. The shared library (`lib`) contains common utilities and data structures used across different problems.
