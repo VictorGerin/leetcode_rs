@@ -230,4 +230,148 @@ where
     }
 
     Ok(current_val.ok_or(ProcessInputError::EmptyInput)?)
-} 
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_parser_list() {
+        let input = r#"
+        [
+            "Hello, World!",
+            42,
+            3.14,
+            true,
+            false,
+            null,
+            [
+                "Nested list"
+            ]
+        ]
+        "#.chars();
+
+        let result = parser(input);
+
+        assert_eq!(
+            result,
+            Ok(Value::Vec(vec![
+                Value::Str("Hello, World!".to_string()),
+                Value::Int(42),
+                Value::Double(3.14),
+                Value::Bool(true),
+                Value::Bool(false),
+                Value::None,
+                Value::Vec(vec![
+                    Value::Str("Nested list".to_string())
+                ])
+            ]))
+        );
+    }
+
+    #[test]
+    fn test_parser_string() {
+        let input = r#""Hello, \"World!\" \\ <- this is a bar""#.chars();
+
+        let result = parser(input);
+
+        assert_eq!(
+            result,
+            Ok(Value::Str(r#"Hello, "World!" \ <- this is a bar"#.to_string()))
+        );
+    }
+
+    #[test]
+    fn test_parser_number() {
+        let input = r#"42"#.chars();
+
+        let result = parser(input);
+
+        assert_eq!(
+            result,
+            Ok(Value::Int(42))
+        );
+    }
+
+    #[test]
+    fn test_parser_double() {
+        let input = r#"3.14"#.chars();
+
+        let result = parser(input);
+
+        assert_eq!(
+            result,
+            Ok(Value::Double(3.14))
+        );
+    }
+
+    #[test]
+    fn test_parser_boolean() {
+        let input = r#"true"#.chars();
+
+        let result = parser(input);
+
+        assert_eq!(
+            result,
+            Ok(Value::Bool(true))
+        );
+
+        let input = r#"false"#.chars();
+
+        let result = parser(input);
+
+        assert_eq!(
+            result,
+            Ok(Value::Bool(false))
+        );
+
+        let input = r#"null"#.chars();
+
+        let result = parser(input);
+
+        assert_eq!(
+            result,
+            Ok(Value::None)
+        );
+    }
+
+    #[test]
+    fn test_parser_invalid_input() {
+        let input = r#"{"#.chars();
+
+        let result = parser(input);
+
+        assert_eq!(
+            result,
+            Err(ProcessInputError::InvalidInput)
+        );
+    }
+
+    #[test]
+    fn test_parser_comment() {
+        let input = r#"
+        //this is a comment
+        "#.chars();
+
+        let result = parser(input);
+
+        assert_eq!(
+            result,
+            Err(ProcessInputError::EmptyInput)
+        );
+
+        let input = r#"
+        /*
+            This is a mult line comment
+        */
+        "#.chars();
+
+        let result = parser(input);
+
+        assert_eq!(
+            result,
+            Err(ProcessInputError::EmptyInput)
+        );
+    }
+}
