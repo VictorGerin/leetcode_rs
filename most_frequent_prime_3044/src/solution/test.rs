@@ -15,13 +15,13 @@ fn test_most_frequent_prime() -> Result<(), String> {
             let matrix = caso_teste[0].clone()
                 .as_vec::<_, _, Result<Vec<Vec<i32>>, String>>(|v| {
                     v.as_vec::<_, _, Result<Vec<i32>, String>>(|v| {
-                        v.as_int().ok_or(format!("Expected integer"))
-                    }).ok_or(format!("Expected array"))?
-                }).ok_or(format!("Expected array, got {:?}", caso_teste[0]))??;
+                        v.as_int().map_err(|x| format!("Expected integer, got {:?}", x))
+                    }).map_err(|x| format!("Expected array, got {:?}", x))?
+                }).map_err(|x| format!("Expected array, got {:?}", x))??;
 
             let expected = caso_teste[1].clone()
                 .as_int()
-                .ok_or(format!("Invalid expected result: {:?}", caso_teste[1]))?;
+                .map_err(|x| format!("Invalid expected result: {:?}", x))?;
 
             let result = Solution::most_frequent_prime(matrix.clone());
             assert_eq!(result, expected, "Expected result to be {}, but got {}", expected, result);

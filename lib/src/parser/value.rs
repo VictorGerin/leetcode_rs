@@ -1,3 +1,5 @@
+use crate::data_structures::{ListNode, TreeNode};
+
 #[derive(Debug, Clone)]
 pub enum Value {
     Int(i128),
@@ -9,52 +11,63 @@ pub enum Value {
 }
 
 impl Value {
-    pub fn as_int(self) -> Option<i32> {
+    pub fn as_int(self) -> Result<i32, Self> {
         match self {
-            Value::Int(v) => Some(v as i32),
-            Value::Double(v) => Some(v as i32),
-            _ => None
+            Value::Int(v) => Ok(v as i32),
+            Value::Double(v) => Ok(v as i32),
+            _ => Err(self)
         }
     }
     
-    pub fn as_double(self) -> Option<f64> {
+    pub fn as_double(self) -> Result<f64, Self> {
         match self {
-            Value::Int(v) => Some(v as f64),
-            Value::Double(v) => Some(v as f64),
-            _ => None
+            Value::Int(v) => Ok(v as f64),
+            Value::Double(v) => Ok(v as f64),
+            _ => Err(self)
         }
     }
 
-    pub fn as_string(self) -> Option<String> {
+    pub fn as_string(self) -> Result<String, Self> {
         match self {
-            Value::Str(s) => Some(s),
-            _ => None
+            Value::Str(s) => Ok(s),
+            _ => Err(self)
         }
     }
 
-    pub fn as_bool(self) -> Option<bool> {
+    pub fn as_bool(self) -> Result<bool, Self> {
         match self {
-            Value::Bool(b) => Some(b),
-            _ => None
+            Value::Bool(b) => Ok(b),
+            _ => Err(self)
         }
     }
 
-    pub fn as_long(self) -> Option<i64> {
+    pub fn as_long(self) -> Result<i64, Self> {
         match self {
-            Value::Int(v) => Some(v as i64),
-            Value::Double(v) => Some(v as i64),
-            _ => None
+            Value::Int(v) => Ok(v as i64),
+            Value::Double(v) => Ok(v as i64),
+            _ => Err(self)
         }
     }
 
-    pub fn as_vec<F, T, U>(self, f: F) -> Option<U>
+    pub fn as_vec<F, T, U>(self, f: F) -> Result<U, Self>
     where
         F: Fn(Value) -> T,
         U: std::iter::FromIterator<T>
     {
         match self {
-            Value::Vec(v) => Some(v.into_iter().map(f).collect::<U>()),
-            _ => None,
+            Value::Vec(v) => Ok(v.into_iter().map(f).collect::<U>()),
+            _ => Err(self),
         }
+    }
+
+    
+    pub fn as_list_node(self) -> Result<ListNode, Self>
+    {
+        todo!("Implement this method")
+    }
+
+    pub fn as_tree_node(self) -> Result<TreeNode, Self>
+    {
+        todo!("Implement this method")
     }
 } 

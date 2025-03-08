@@ -15,9 +15,15 @@ fn test_sum_two_numbers() -> Result<(), String> {
 
     values.chunks_exact(3)
         .try_for_each(|caso_teste| -> Result<(), String> {
-            let a = caso_teste[0].clone().as_int().ok_or(format!("Invalid input for a: {:?}", caso_teste[0]))?;
-            let b = caso_teste[1].clone().as_int().ok_or(format!("Invalid input for b: {:?}", caso_teste[1]))?;
-            let expected = caso_teste[2].clone().as_int().ok_or(format!("Invalid expected sum: {:?}", caso_teste[2]))?;
+            let a = caso_teste[0].clone()
+                            .as_int()
+                            .map_err(|x| format!("Invalid input for a: {:?}", x))?;
+            let b = caso_teste[1].clone()
+                            .as_int()
+                            .map_err(|x| format!("Invalid input for b: {:?}", x))?;
+            let expected = caso_teste[2].clone()
+                                    .as_int()
+                                    .map_err(|x| format!("Invalid expected sum: {:?}", x))?;
 
             let sum = Solution::sum_two_numbers(a, b);
             assert_eq!(sum, expected, "Expected sum of {} + {} to be {}, but got {}", a, b, expected, sum);

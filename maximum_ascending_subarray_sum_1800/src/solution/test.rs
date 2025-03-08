@@ -16,11 +16,11 @@ fn test_max_ascending_sum() -> Result<(), String> {
         .try_for_each(|caso_teste| -> Result<(), String> {
             let nums = caso_teste[0].clone()
                 .as_vec::<_, _, Vec<i32>>(|v| v.as_int().unwrap())
-                .ok_or(format!("Expected array, got {:?}", caso_teste[0]))?;
+                .map_err(|x| format!("Expected array, got {:?}", x))?;
 
             let expected = caso_teste[1].clone()
                 .as_int()
-                .ok_or(format!("Invalid expected result: {:?}", caso_teste[1]))?;
+                .map_err(|x| format!("Invalid expected result: {:?}", x))?;
 
             let result = Solution::max_ascending_sum(nums.clone());
             assert_eq!(result, expected, "Expected result to be {}, but got {}", expected, result);
