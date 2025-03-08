@@ -1,6 +1,6 @@
 use super::{Value, ProcessInputError};
 
-pub fn process_input<I>(iter: I) -> Result<Value, ProcessInputError>
+pub fn parser<I>(iter: I) -> Result<Value, ProcessInputError>
 where 
     I: Iterator<Item = char>
 {
@@ -11,6 +11,8 @@ where
         String,
         Number,
         Boolean,
+        LineComment,
+        MultLineComment,
         End
     }
 
@@ -47,6 +49,28 @@ where
                         state = State::Boolean;
                         current_text.push(c);
                         iter.next();
+                    },
+                    '/' => {
+                        iter.next();
+
+                        let Some(next_char) = iter.peek()
+                        else {
+                            return Err(ProcessInputError::InvalidInput);
+                        };
+                        
+                        match next_char {
+                            '/' => {
+                                state = State::LineComment;
+                                iter.next();
+                            },
+                            '*' => {
+                                state = State::MultLineComment;
+                                iter.next();
+                            },
+                            _ => {
+                                return Err(ProcessInputError::InvalidInput);
+                            }
+                        }
                     },
                     _ => {
                         return Err(ProcessInputError::InvalidInput);
@@ -171,6 +195,31 @@ where
                             _ => None  
                         }.ok_or(ProcessInputError::InvalidKeyWord(format!("\"{}\" is not a key word: true, false ou null", current_text)))?);
                         current_text.clear();
+                    }
+                }
+            },
+            State::LineComment => {
+                match c {
+                    '\n' | '\r' => {
+                        state = last_state;
+                        iter.next();
+                    },
+                    _ => {
+                        iter.next();
+                    }
+                }
+            },
+            State::MultLineComment => {
+                match c {
+                    '*' => {
+                        iter.next();
+                        if let Some('/') = iter.peek() {
+                            state = last_state;
+                            iter.next();
+                        }
+                    },
+                    _ => {
+                        iter.next();
                     }
                 }
             },

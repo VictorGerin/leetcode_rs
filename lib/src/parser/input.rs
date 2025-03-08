@@ -9,7 +9,7 @@ pub fn read_input(default_file: &str) -> Result<std::vec::IntoIter<char>, String
             .bytes()
             .filter_map(|b| b.ok())
             .collect();
-            
+                    
         String::from_utf8_lossy(&bytes).chars().collect::<Vec<char>>().into_iter()
     } else {
         let bytes: Vec<u8> = io::stdin()

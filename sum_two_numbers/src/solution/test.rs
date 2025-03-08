@@ -13,8 +13,6 @@ fn test_sum_two_numbers() -> Result<(), String> {
         .collect::<Result<Vec<Value>, ProcessInputError>>()
         .map_err(|e| e.to_string())?;
 
-    println!("Testing n test cases: {:?}", values.len());
-
     values.chunks_exact(3)
         .try_for_each(|caso_teste| -> Result<(), String> {
             let a = caso_teste[0].clone().as_int().ok_or(format!("Invalid input for a: {:?}", caso_teste[0]))?;

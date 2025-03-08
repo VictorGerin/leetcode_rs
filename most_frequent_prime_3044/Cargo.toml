@@ -5,10 +5,3 @@ edition = "2021"
 
 [dependencies]
 leetcode_lib = { path = "../lib" }
-
-[dev-dependencies]
-criterion = "0.5"
-
-[[bench]]
-name = "most_frequent_prime_benchmark"
-harness = false 
