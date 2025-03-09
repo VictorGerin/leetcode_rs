@@ -15,14 +15,14 @@ use super::{Val, ProcessInputError};
 /// 
 /// # Example
 /// ```
-/// use leetcode_lib::parser::{parser_str, Value};
+/// use leetcode_lib::parser::{parser_str, Val};
 /// 
 /// let input = r#"
 ///     "Hello, \"World!\""
 /// "#;
 /// let result = parser_str(input);
 /// 
-/// assert_eq!(result, Ok(Value::Str(r#"Hello, "World!""#.to_string())));
+/// assert_eq!(result, Ok(Val::Str(r#"Hello, "World!""#.to_string())));
 /// ```
 /// 
 pub fn parser_str(str: &str) -> Result<Val, ProcessInputError>
@@ -42,14 +42,14 @@ pub fn parser_str(str: &str) -> Result<Val, ProcessInputError>
 /// 
 /// # Example
 /// ```
-/// use leetcode_lib::parser::{parser, Value};
+/// use leetcode_lib::parser::{parser, Val};
 /// 
 /// let input = r#"
 ///     "Hello, \"World!\""
 /// "#;
 /// let result = parser(input.chars());
 /// 
-/// assert_eq!(result, Ok(Value::Str(r#"Hello, "World!""#.to_string())));
+/// assert_eq!(result, Ok(Val::Str(r#"Hello, "World!""#.to_string())));
 /// ```
 /// 
 /// 

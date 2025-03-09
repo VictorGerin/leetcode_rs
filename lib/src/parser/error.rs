@@ -29,7 +29,7 @@ impl Error for ProcessInputError {}
 #[derive(PartialEq)]
 pub enum ValErr {
     IsNotVec(Val),
-    NotAllElementsIsIntOnVec(Val),
+    NotAllElementsIsIntOnVec(Vec<Val>),
 }
 
 impl Display for ValErr {

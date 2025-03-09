@@ -1,7 +1,19 @@
 use crate::data_structures::{ListNode, TreeNode};
 
-use super::{error::ValErr, input, parser_str};
+use super::{error::ValErr, parser_str};
 
+
+///
+/// Basic object that holds a value
+/// any use of the parser should return a Val
+/// 
+/// # Example
+/// ```
+/// use leetcode_lib::parser::Val;
+/// let v = "10".parse::<Val>();
+/// assert_eq!(v, Ok(Val::Int(10)));
+/// assert_eq!(v.unwrap().as_int().unwrap(), 10);
+/// ```
 #[derive(Debug, Clone, PartialEq)]
 pub enum Val {
     Int(i128),
@@ -62,28 +74,26 @@ impl Val {
 
     pub fn as_vec_int(self) -> Result<Vec<i32>, ValErr>
     {
-        self.as_vec()
-            .map_err(|x| ValErr::IsNotVec(x))?
+        let (vec, errs): (Vec<_>, Vec<_>) = self.as_vec()
+            .map_err(ValErr::IsNotVec)?
             .into_iter()
-            .map(|x| x.as_int())
-            .collect::<Result<Vec<i32>, Self>>()
-            .map_err(|x| ValErr::NotAllElementsIsIntOnVec(x))
+            .map(Val::as_int)
+            .partition(Result::is_ok);
+        
+        if errs.is_empty() {
+            Ok(vec.into_iter().map(Result::unwrap).collect())
+        } else {
+            Err(ValErr::NotAllElementsIsIntOnVec(errs.into_iter().map(Result::unwrap_err).collect()))
+        }
     }
 
     
     pub fn as_list_node(self) -> Result<ListNode, ValErr>
     {
-        let vec = self.as_vec()
-            .map_err(|x| ValErr::IsNotVec(x))?
-            .into_iter()
-            .map(|x| x.as_int())
-            .collect::<Result<Vec<i32>, Self>>()
-            .map_err(|x| ValErr::NotAllElementsIsIntOnVec(x))?;
-
-        Ok(vec.into_iter().collect::<ListNode>())
+        Ok(self.as_vec_int()?.into_iter().collect::<ListNode>())
     }
 
-    pub fn as_tree_node(self) -> Result<TreeNode, Self>
+    pub fn as_tree_node(self) -> Result<TreeNode, ValErr>
     {
         todo!("Implement this method")
     }
@@ -154,24 +164,34 @@ mod test {
     fn test_as_vec() -> Result<(), String> {
 
         //ok test
-        let v = super::super::parser_str("[10, 20]")
+        let v = parser_str("[10, 20]")
         .map_err(|_| "opps".to_string())?;
 
         let v = v.as_vec_int();
         assert_eq!(v, Ok(vec![10, 20]));
 
         //is a vector but can't convert to int all elements
-        let v = super::super::parser_str("[10, \"teste\"]")
+        let v = parser_str(r#"[10, "teste", "2"]"#)
         .map_err(|x| x.to_string())?;
 
         let v = v.as_vec_int();
-        assert_eq!(v, Err(ValErr::NotAllElementsIsIntOnVec(Val::Str("teste".to_string()))));
+        assert_eq!(v, Err(ValErr::NotAllElementsIsIntOnVec(
+            vec![Val::Str("teste".to_string()), Val::Str("2".to_string())]
+        )));
 
         //Not a vector
-        let v = super::super::parser_str(r#""20""#)
+        let v = parser_str(r#""20""#)
         .map_err(|_| "opps".to_string())?;
         let v = v.as_vec_int();
         assert_eq!(v, Err(ValErr::IsNotVec(Val::Str("20".to_string()))));
+
+        
+        //not a complete vector, last element is returned as error
+        let v = parser_str("[10, 20")
+        .map_err(|_| "opps".to_string())?;
+
+        let v = v.as_vec_int();
+        assert_eq!(v, Err(ValErr::IsNotVec(Val::Int(20))));
 
         Ok(())
     }
