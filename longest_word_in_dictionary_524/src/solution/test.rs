@@ -3,7 +3,7 @@
 use super::solution::*;
 
 #[test]
-fn test_find_longest_word() -> Result<(), String> {
+fn longest_word_in_dictionary() -> Result<(), String> {
     use leetcode_lib::parser::{Value, ValueIterator, ProcessInputError, read_input};
 
     let chars = read_input("input.txt")?;

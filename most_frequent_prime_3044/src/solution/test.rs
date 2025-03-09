@@ -3,7 +3,7 @@
 use super::solution::*;
 
 #[test]
-fn test_most_frequent_prime() -> Result<(), String> {
+fn most_frequent_prime() -> Result<(), String> {
     use leetcode_lib::parser::{Value, ValueIterator, ProcessInputError, read_input};
     let chars = read_input("input.txt")?;
     

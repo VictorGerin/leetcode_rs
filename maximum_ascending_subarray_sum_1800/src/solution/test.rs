@@ -3,7 +3,7 @@
 use super::solution::*;
 
 #[test]
-fn test_max_ascending_sum() -> Result<(), String> {
+fn maximum_ascending_subarray_sum() -> Result<(), String> {
     use leetcode_lib::parser::{Value, ValueIterator, ProcessInputError, read_input};
 
     let chars = read_input("input.txt")?;

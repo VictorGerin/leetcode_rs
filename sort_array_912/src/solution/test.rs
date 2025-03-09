@@ -3,7 +3,7 @@
 use super::solution::*;
 
 #[test]
-fn test_sort_array() -> Result<(), String> {
+fn sort_array() -> Result<(), String> {
     use leetcode_lib::parser::{Value, ValueIterator, ProcessInputError, read_input};
     let chars = read_input("input.txt")?;
     

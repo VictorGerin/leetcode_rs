@@ -94,9 +94,11 @@ where
                         iter.next();
                     },
                     ']' => {
-                        stack_lst.last_mut()
-                        .ok_or(ProcessInputError::UnexpectedError("Empty stack".to_string()))?
-                        .push(current_val.ok_or(ProcessInputError::UnexpectedError("Current value empty".to_string()))?.clone());
+                        if let Some(val) = current_val {
+                            stack_lst.last_mut()
+                            .ok_or(ProcessInputError::UnexpectedError("Empty stack".to_string()))?
+                            .push(val);
+                        }
 
                         current_val = Some(Value::Vec(stack_lst.pop().ok_or(ProcessInputError::UnexpectedError("Empty stack".to_string()))?));
                         
@@ -237,7 +239,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_parser_list() {
+    fn parser_list() {
         let input = r#"
         [
             "Hello, World!",
@@ -271,7 +273,19 @@ mod tests {
     }
 
     #[test]
-    fn test_parser_string() {
+    fn empty_list() {
+        let input = r#"[]"#.chars();
+
+        let result = parser(input);
+
+        assert_eq!(
+            result,
+            Ok(Value::Vec(vec![]))
+        );
+    }
+
+    #[test]
+    fn parser_string() {
         let input = r#""Hello, \"World!\" \\ <- this is a bar""#.chars();
 
         let result = parser(input);
@@ -283,7 +297,7 @@ mod tests {
     }
 
     #[test]
-    fn test_parser_number() {
+    fn parser_number() {
         let input = r#"42"#.chars();
 
         let result = parser(input);
@@ -295,7 +309,7 @@ mod tests {
     }
 
     #[test]
-    fn test_parser_double() {
+    fn parser_double() {
         let input = r#"3.14"#.chars();
 
         let result = parser(input);
@@ -307,7 +321,7 @@ mod tests {
     }
 
     #[test]
-    fn test_parser_boolean() {
+    fn parser_boolean() {
         let input = r#"true"#.chars();
 
         let result = parser(input);
@@ -337,7 +351,7 @@ mod tests {
     }
 
     #[test]
-    fn test_parser_invalid_input() {
+    fn parser_invalid_input() {
         let input = r#"{"#.chars();
 
         let result = parser(input);
@@ -349,7 +363,7 @@ mod tests {
     }
 
     #[test]
-    fn test_parser_comment() {
+    fn parser_comment() {
         let input = r#"
         //this is a comment
         "#.chars();

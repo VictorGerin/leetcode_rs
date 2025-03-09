@@ -41,7 +41,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_value_iterator() -> Result<(), String> {
+    fn value_iterator() -> Result<(), String> {
 
         let input = "1 2 3 4 5".chars();
 
@@ -59,7 +59,7 @@ mod tests {
     }
 
     #[test]
-    fn test_value_iterator_with_comments() -> Result<(), String> {
+    fn value_iterator_with_comments() -> Result<(), String> {
 
         let input = r#"
         // first obj is a comment
@@ -91,7 +91,7 @@ mod tests {
     }
 
     #[test]
-    fn test_value_iterator_multple_types() -> Result<(), String> {
+    fn value_iterator_multple_types() -> Result<(), String> {
 
         let input = r#"
         "Ola" 123
@@ -122,7 +122,7 @@ mod tests {
     }
 
     #[test]
-    fn test_value_iterator_empty_input() -> Result<(), String> {
+    fn value_iterator_empty_input() -> Result<(), String> {
 
         let input = "".chars();
 
@@ -136,15 +136,14 @@ mod tests {
     }
 
     #[test]
-    fn test_value_iterator_empty_array() -> Result<(), String> {
+    fn value_iterator_empty_array() -> Result<(), String> {
 
         let input = "[]".chars();
-        let iter = ValueIterator::new(input)
+        let vec = ValueIterator::new(input)
             .collect::<Result<Vec<Value>, _>>()
-            .map_err(|e| e.to_string())?;
+            .map_err(|e| e.to_string());
 
-        println!("{:?}", iter);
-
+        assert_eq!(vec, Ok(vec![Value::Vec(vec![])]));
 
         Ok(())
     }

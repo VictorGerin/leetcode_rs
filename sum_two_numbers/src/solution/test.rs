@@ -4,7 +4,7 @@ use super::solution::*;
 
 
 #[test]
-fn test_sum_two_numbers() -> Result<(), String> {
+fn sum_two_numbers() -> Result<(), String> {
     use leetcode_lib::parser::{Value, ValueIterator, ProcessInputError, read_input};
 
     let chars = read_input("input.txt")?;
