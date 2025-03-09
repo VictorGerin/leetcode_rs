@@ -14,11 +14,11 @@ fn sort_array() -> Result<(), String> {
     values.chunks_exact(2)
         .try_for_each(|caso_teste| -> Result<(), String> {
             let nums = caso_teste[0].clone()
-                .as_vec::<_, _, Vec<i32>>(|v| v.as_int().unwrap())
+                .as_vec_int()
                 .map_err(|x| format!("Expected array, got {:?}", x))?;
 
             let expected = caso_teste[1].clone()
-                .as_vec::<_, _, Vec<i32>>(|v| v.as_int().unwrap())
+                .as_vec_int()
                 .map_err(|x| format!("Expected array, got {:?}", x))?;
 
             let result = Solution::sort_array(nums.clone());

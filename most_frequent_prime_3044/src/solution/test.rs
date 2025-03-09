@@ -1,3 +1,5 @@
+use std::f32::consts::E;
+
 #[cfg(test)]
 
 use super::solution::*;
@@ -12,12 +14,15 @@ fn most_frequent_prime() -> Result<(), String> {
         .map_err(|e| e.to_string())?
         .chunks_exact(2)
         .try_for_each(|caso_teste| -> Result<(), String> {
+
             let matrix = caso_teste[0].clone()
-                .as_vec::<_, _, Result<Vec<Vec<i32>>, String>>(|v| {
-                    v.as_vec::<_, _, Result<Vec<i32>, String>>(|v| {
-                        v.as_int().map_err(|x| format!("Expected integer, got {:?}", x))
-                    }).map_err(|x| format!("Expected array, got {:?}", x))?
-                }).map_err(|x| format!("Expected array, got {:?}", x))??;
+                .as_vec()
+                .map_err(|x| format!("Expected array, got {:?}", x))?
+                .into_iter()
+                .map(|x| -> Result<Vec<i32>, String> {
+                    Ok(x.as_vec_int()
+                    .map_err(|x| format!("as_vec_int: {:?}", x))?)
+                }).collect::<Result<Vec<Vec<i32>>, String>>()?;
 
             let expected = caso_teste[1].clone()
                 .as_int()

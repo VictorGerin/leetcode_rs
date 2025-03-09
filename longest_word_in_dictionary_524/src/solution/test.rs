@@ -19,9 +19,13 @@ fn longest_word_in_dictionary() -> Result<(), String> {
                 .map_err(|x| format!("Invalid input for s: {:?}", x))?;
 
             let dictionary = caso_teste[1].clone()
-                .as_vec::<_, _, Result<Vec<String>, String>>(|v| {
-                    v.as_string().map_err(|x| format!("Invalid dictionary, got: {:?}", x))
-                }).map_err(|x| format!("Expected vector for dictionary, got: {:?}", x))??;
+                .as_vec()
+                .map_err(|x| format!("Expected array, got {:?}", x))?
+                .into_iter()
+                .map(|x| -> Result<String, String> {
+                    Ok(x.as_string()
+                    .map_err(|x| format!("dictionary as_string: {:?}", x))?)
+                }).collect::<Result<Vec<String>, String>>()?;
 
             let expected = caso_teste[2].clone()
                 .as_string()

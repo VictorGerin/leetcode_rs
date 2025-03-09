@@ -35,6 +35,14 @@ where
     }
 }
 
+impl<'a> From<&'a str> for ValueIterator<std::str::Chars<'a>> 
+{
+    fn from(input: &'a str) -> Self {
+        let iter = input.chars();
+        Self::new(iter)
+    }
+}
+
 #[cfg(test)]
 mod tests {
 
@@ -43,9 +51,9 @@ mod tests {
     #[test]
     fn value_iterator() -> Result<(), String> {
 
-        let input = "1 2 3 4 5".chars();
+        let input: ValueIterator<_> = "1 2 3 4 5".into();
 
-        let iter = ValueIterator::new(input)
+        let iter = input
             .collect::<Result<Vec<Value>, _>>()
             .map_err(|e| e.to_string())?
             .into_iter()
@@ -61,7 +69,7 @@ mod tests {
     #[test]
     fn value_iterator_with_comments() -> Result<(), String> {
 
-        let input = r#"
+        let input: ValueIterator<_> = r#"
         // first obj is a comment
         1
         // this is a comment
@@ -75,9 +83,9 @@ mod tests {
         */
         4 // this is a inline comment
         5
-        "#.chars();
+        "#.into();
 
-        let iter = ValueIterator::new(input)
+        let iter = input
             .collect::<Result<Vec<Value>, _>>()
             .map_err(|e| e.to_string())?
             .into_iter()
@@ -98,7 +106,7 @@ mod tests {
         //comment
         3.14 false
         [10] null
-        [[[1]]] //just for fun
+        [[[]]] //just for fun
         "#.chars();
 
         let mut iter = ValueIterator::new(input)
@@ -114,7 +122,7 @@ mod tests {
         assert_eq!(iter.next(), Some(Value::Bool(false)));
         assert_eq!(iter.next(), Some(Value::Vec(vec![Value::Int(10)])));
         assert_eq!(iter.next(), Some(Value::None));
-        assert_eq!(iter.next(), Some(Value::Vec(vec![Value::Vec(vec![Value::Vec(vec![Value::Int(1)])])])));
+        assert_eq!(iter.next(), Some(Value::Vec(vec![Value::Vec(vec![Value::Vec(vec![])])])));
 
         assert_eq!(iter.next(), None);
     

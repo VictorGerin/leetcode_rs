@@ -1,5 +1,10 @@
 use super::{Value, ProcessInputError};
 
+pub fn parser_str(iter: &str) -> Result<Value, ProcessInputError>
+{
+    return parser(iter.chars());
+}
+
 pub fn parser<I>(iter: I) -> Result<Value, ProcessInputError>
 where 
     I: Iterator<Item = char>
@@ -87,20 +92,29 @@ where
                         iter.next();
                     },
                     ',' =>  {
-                        stack_lst.last_mut()
-                        .ok_or(ProcessInputError::UnexpectedError("Empty stack".to_string()))?
-                        .push(current_val.ok_or(ProcessInputError::UnexpectedError("Current value empty".to_string()))?.clone());
-                        current_val = None;
+                        if let Some(val) = current_val.take() {
+                            stack_lst
+                                .last_mut()
+                                .ok_or_else(|| ProcessInputError::UnexpectedError("Empty stack".to_string()))?
+                                .push(val);
+                        }
                         iter.next();
                     },
                     ']' => {
-                        if let Some(val) = current_val {
-                            stack_lst.last_mut()
-                            .ok_or(ProcessInputError::UnexpectedError("Empty stack".to_string()))?
-                            .push(val);
+                        if let Some(val) = current_val.take() {
+                            stack_lst
+                                .last_mut()
+                                .ok_or_else(|| ProcessInputError::UnexpectedError("Empty stack".to_string()))?
+                                .push(val);
                         }
 
-                        current_val = Some(Value::Vec(stack_lst.pop().ok_or(ProcessInputError::UnexpectedError("Empty stack".to_string()))?));
+                        current_val = Some(
+                            Value::Vec(
+                                stack_lst
+                                    .pop()
+                                    .ok_or_else(|| ProcessInputError::UnexpectedError("Empty stack".to_string()))?
+                            )
+                        );
                         
                         if stack_lst.len() == 0 {
                             state = State::End;
@@ -195,7 +209,7 @@ where
                             "false" => Some(Value::Bool(false)),
                             "null" => Some(Value::None),
                             _ => None  
-                        }.ok_or(ProcessInputError::InvalidKeyWord(format!("\"{}\" is not a key word: true, false ou null", current_text)))?);
+                        }.ok_or_else(|| ProcessInputError::InvalidKeyWord(format!("\"{}\" is not a key word: true, false ou null", current_text)))?);
                         current_text.clear();
                     }
                 }
@@ -231,7 +245,7 @@ where
         }
     }
 
-    Ok(current_val.ok_or(ProcessInputError::EmptyInput)?)
+    Ok(current_val.ok_or_else(|| ProcessInputError::EmptyInput)?)
 }
 
 #[cfg(test)]
@@ -252,9 +266,9 @@ mod tests {
                 "Nested list"
             ]
         ]
-        "#.chars();
+        "#;
 
-        let result = parser(input);
+        let result = parser_str(input);
 
         assert_eq!(
             result,
@@ -274,9 +288,21 @@ mod tests {
 
     #[test]
     fn empty_list() {
-        let input = r#"[]"#.chars();
+        let input = r#"[]"#;
 
-        let result = parser(input);
+        let result = parser_str(input);
+
+        assert_eq!(
+            result,
+            Ok(Value::Vec(vec![]))
+        );
+    }
+
+    #[test]
+    fn empty_list2() {
+        let input = r#"[,]"#;
+
+        let result = parser_str(input);
 
         assert_eq!(
             result,
@@ -286,9 +312,9 @@ mod tests {
 
     #[test]
     fn parser_string() {
-        let input = r#""Hello, \"World!\" \\ <- this is a bar""#.chars();
+        let input = r#""Hello, \"World!\" \\ <- this is a bar""#;
 
-        let result = parser(input);
+        let result = parser_str(input);
 
         assert_eq!(
             result,
@@ -298,9 +324,9 @@ mod tests {
 
     #[test]
     fn parser_number() {
-        let input = r#"42"#.chars();
+        let input = r#"42"#;
 
-        let result = parser(input);
+        let result = parser_str(input);
 
         assert_eq!(
             result,
@@ -310,9 +336,9 @@ mod tests {
 
     #[test]
     fn parser_double() {
-        let input = r#"3.14"#.chars();
+        let input = r#"3.14"#;
 
-        let result = parser(input);
+        let result = parser_str(input);
 
         assert_eq!(
             result,
@@ -322,27 +348,27 @@ mod tests {
 
     #[test]
     fn parser_boolean() {
-        let input = r#"true"#.chars();
+        let input = r#"true"#;
 
-        let result = parser(input);
+        let result = parser_str(input);
 
         assert_eq!(
             result,
             Ok(Value::Bool(true))
         );
 
-        let input = r#"false"#.chars();
+        let input = r#"false"#;
 
-        let result = parser(input);
+        let result = parser_str(input);
 
         assert_eq!(
             result,
             Ok(Value::Bool(false))
         );
 
-        let input = r#"null"#.chars();
+        let input = r#"null"#;
 
-        let result = parser(input);
+        let result = parser_str(input);
 
         assert_eq!(
             result,
@@ -352,9 +378,9 @@ mod tests {
 
     #[test]
     fn parser_invalid_input() {
-        let input = r#"{"#.chars();
+        let input = r#"{"#;
 
-        let result = parser(input);
+        let result = parser_str(input);
 
         assert_eq!(
             result,
@@ -366,9 +392,9 @@ mod tests {
     fn parser_comment() {
         let input = r#"
         //this is a comment
-        "#.chars();
+        "#;
 
-        let result = parser(input);
+        let result = parser_str(input);
 
         assert_eq!(
             result,
@@ -379,9 +405,9 @@ mod tests {
         /*
             This is a mult line comment
         */
-        "#.chars();
+        "#;
 
-        let result = parser(input);
+        let result = parser_str(input);
 
         assert_eq!(
             result,
