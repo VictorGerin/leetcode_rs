@@ -109,4 +109,41 @@ impl FromIterator<i32> for ListNode {
 
         *list.unwrap()
     }
-} 
+}
+
+impl ToString for ListNode {
+    fn to_string(&self) -> String {
+        let mut result = "[".to_string();
+        for (index, val) in self.iter().enumerate() {
+            if index != 0 {
+                result.push_str(",");
+            }
+            result.push_str(&val.to_string());
+        }
+        result.push_str("]");
+        result
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_list_node() {
+        let list = ListNode::from_iter(vec![1, 2, 3, 4, 5]);
+        assert_eq!(list.to_string(), "[1,2,3,4,5]");
+        
+        let list = *list.next.unwrap();
+        assert_eq!(list.to_string(), "[2,3,4,5]");
+        
+        let list = *list.next.unwrap();
+        assert_eq!(list.to_string(), "[3,4,5]");
+        
+        let list = *list.next.unwrap();
+        assert_eq!(list.to_string(), "[4,5]");
+        
+        let list = *list.next.unwrap();
+        assert_eq!(list.to_string(), "[5]");
+    }
+}
