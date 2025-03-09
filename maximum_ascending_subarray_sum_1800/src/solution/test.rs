@@ -4,12 +4,12 @@ use super::solution::*;
 
 #[test]
 fn maximum_ascending_subarray_sum() -> Result<(), String> {
-    use leetcode_lib::parser::{Value, ValueIterator, ProcessInputError, read_input};
+    use leetcode_lib::parser::{Val, ValIter, ProcessInputError, read_input};
 
     let chars = read_input("input.txt")?;
     
-    let values = ValueIterator::new(chars)
-        .collect::<Result<Vec<Value>, ProcessInputError>>()
+    let values = ValIter::new(chars)
+        .collect::<Result<Vec<Val>, ProcessInputError>>()
         .map_err(|e| e.to_string())?;
 
     values.chunks_exact(2)

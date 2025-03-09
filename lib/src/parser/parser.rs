@@ -1,11 +1,59 @@
-use super::{Value, ProcessInputError};
+use super::{Val, ProcessInputError};
 
-pub fn parser_str(iter: &str) -> Result<Value, ProcessInputError>
+///
+/// parse a JSON-like string defined by LeetCode
+/// https://support.leetcode.com/hc/en-us/articles/32442719377939-How-to-create-test-cases-on-LeetCode
+/// 
+/// This function is a alias to leetcode_lib::parser::parser function as 
+/// sometimes there is no need to process varius times the same input until the end
+/// 
+/// # Arguments
+/// str: A string slice
+///
+/// # Returns
+/// A Result<Value, ProcessInputError> where Value is the parsed value and ProcessInputError is an error enum
+/// 
+/// # Example
+/// ```
+/// use leetcode_lib::parser::{parser_str, Value};
+/// 
+/// let input = r#"
+///     "Hello, \"World!\""
+/// "#;
+/// let result = parser_str(input);
+/// 
+/// assert_eq!(result, Ok(Value::Str(r#"Hello, "World!""#.to_string())));
+/// ```
+/// 
+pub fn parser_str(str: &str) -> Result<Val, ProcessInputError>
 {
-    return parser(iter.chars());
+    return parser(str.chars());
 }
 
-pub fn parser<I>(iter: I) -> Result<Value, ProcessInputError>
+///
+/// Parse a JSON-like string defined by LeetCode
+/// https://support.leetcode.com/hc/en-us/articles/32442719377939-How-to-create-test-cases-on-LeetCode
+/// 
+/// # Arguments
+/// iter: An iterator of char
+/// 
+/// # Returns
+/// A Result<Value, ProcessInputError> where Value is the parsed value and ProcessInputError is an error enum
+/// 
+/// # Example
+/// ```
+/// use leetcode_lib::parser::{parser, Value};
+/// 
+/// let input = r#"
+///     "Hello, \"World!\""
+/// "#;
+/// let result = parser(input.chars());
+/// 
+/// assert_eq!(result, Ok(Value::Str(r#"Hello, "World!""#.to_string())));
+/// ```
+/// 
+/// 
+pub fn parser<I>(iter: I) -> Result<Val, ProcessInputError>
 where 
     I: Iterator<Item = char>
 {
@@ -23,8 +71,8 @@ where
 
     let mut last_state: State = State::End;
     let mut state: State = State::StartStateMachine;
-    let mut current_val: Option<Value> = None;
-    let mut stack_lst: Vec<Vec<Value>> = vec![];
+    let mut current_val: Option<Val> = None;
+    let mut stack_lst: Vec<Vec<Val>> = vec![];
     let mut current_text = String::new();
 
     let mut iter = iter.chain(std::iter::once(' ')).peekable();
@@ -92,29 +140,25 @@ where
                         iter.next();
                     },
                     ',' =>  {
+                        let Some(top) = stack_lst.last_mut() else {
+                            return Err(ProcessInputError::UnexpectedError("Empty stack".to_string()));
+                        };
+
                         if let Some(val) = current_val.take() {
-                            stack_lst
-                                .last_mut()
-                                .ok_or_else(|| ProcessInputError::UnexpectedError("Empty stack".to_string()))?
-                                .push(val);
+                            top.push(val);
                         }
                         iter.next();
                     },
                     ']' => {
+                        let Some(mut top) = stack_lst.pop() else {
+                            return Err(ProcessInputError::UnexpectedError("Empty stack".to_string()));
+                        };
+
                         if let Some(val) = current_val.take() {
-                            stack_lst
-                                .last_mut()
-                                .ok_or_else(|| ProcessInputError::UnexpectedError("Empty stack".to_string()))?
-                                .push(val);
+                            top.push(val);
                         }
 
-                        current_val = Some(
-                            Value::Vec(
-                                stack_lst
-                                    .pop()
-                                    .ok_or_else(|| ProcessInputError::UnexpectedError("Empty stack".to_string()))?
-                            )
-                        );
+                        current_val = Some(Val::Vec(top));
                         
                         if stack_lst.len() == 0 {
                             state = State::End;
@@ -148,7 +192,7 @@ where
                 match c {
                     '"' => {
                         state = last_state;
-                        current_val = Some(Value::Str(current_text.clone()));
+                        current_val = Some(Val::Str(current_text.clone()));
                         current_text.clear();
                         iter.next();
                     },
@@ -179,14 +223,14 @@ where
                         state = last_state;
                         if current_text.contains(".") {
                             current_val = Some(
-                                Value::Double(
+                                Val::Double(
                                     current_text.parse::<f64>()
                                     .map_err(|_| ProcessInputError::UnexpectedError(format!("\"{}\" is not a valid double", current_text)))?
                                 )
                             );
                         } else {
                             current_val = Some(
-                                Value::Int(
+                                Val::Int(
                                     current_text.parse::<i128>()
                                     .map_err(|_| ProcessInputError::UnexpectedError(format!("\"{}\" is not a valid integer", current_text)))?
                                 )
@@ -205,9 +249,9 @@ where
                     _ => {
                         state = last_state;
                         current_val = Some(match current_text.to_lowercase().as_str() {
-                            "true" => Some(Value::Bool(true)),
-                            "false" => Some(Value::Bool(false)),
-                            "null" => Some(Value::None),
+                            "true" => Some(Val::Bool(true)),
+                            "false" => Some(Val::Bool(false)),
+                            "null" => Some(Val::None),
                             _ => None  
                         }.ok_or_else(|| ProcessInputError::InvalidKeyWord(format!("\"{}\" is not a key word: true, false ou null", current_text)))?);
                         current_text.clear();
@@ -248,6 +292,9 @@ where
     Ok(current_val.ok_or_else(|| ProcessInputError::EmptyInput)?)
 }
 
+///
+/// Test and examples for parser function
+/// 
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -272,15 +319,15 @@ mod tests {
 
         assert_eq!(
             result,
-            Ok(Value::Vec(vec![
-                Value::Str("Hello, World!".to_string()),
-                Value::Int(42),
-                Value::Double(3.14),
-                Value::Bool(true),
-                Value::Bool(false),
-                Value::None,
-                Value::Vec(vec![
-                    Value::Str("Nested list".to_string())
+            Ok(Val::Vec(vec![
+                Val::Str("Hello, World!".to_string()),
+                Val::Int(42),
+                Val::Double(3.14),
+                Val::Bool(true),
+                Val::Bool(false),
+                Val::None,
+                Val::Vec(vec![
+                    Val::Str("Nested list".to_string())
                 ])
             ]))
         );
@@ -294,7 +341,7 @@ mod tests {
 
         assert_eq!(
             result,
-            Ok(Value::Vec(vec![]))
+            Ok(Val::Vec(vec![]))
         );
     }
 
@@ -306,7 +353,7 @@ mod tests {
 
         assert_eq!(
             result,
-            Ok(Value::Vec(vec![]))
+            Ok(Val::Vec(vec![]))
         );
     }
 
@@ -318,7 +365,7 @@ mod tests {
 
         assert_eq!(
             result,
-            Ok(Value::Str(r#"Hello, "World!" \ <- this is a bar"#.to_string()))
+            Ok(Val::Str(r#"Hello, "World!" \ <- this is a bar"#.to_string()))
         );
     }
 
@@ -330,7 +377,7 @@ mod tests {
 
         assert_eq!(
             result,
-            Ok(Value::Int(42))
+            Ok(Val::Int(42))
         );
     }
 
@@ -342,7 +389,7 @@ mod tests {
 
         assert_eq!(
             result,
-            Ok(Value::Double(3.14))
+            Ok(Val::Double(3.14))
         );
     }
 
@@ -354,7 +401,7 @@ mod tests {
 
         assert_eq!(
             result,
-            Ok(Value::Bool(true))
+            Ok(Val::Bool(true))
         );
 
         let input = r#"false"#;
@@ -363,7 +410,7 @@ mod tests {
 
         assert_eq!(
             result,
-            Ok(Value::Bool(false))
+            Ok(Val::Bool(false))
         );
 
         let input = r#"null"#;
@@ -372,7 +419,7 @@ mod tests {
 
         assert_eq!(
             result,
-            Ok(Value::None)
+            Ok(Val::None)
         );
     }
 
@@ -413,5 +460,48 @@ mod tests {
             result,
             Err(ProcessInputError::EmptyInput)
         );
+    }
+
+    #[test]
+    fn parser_n_values() {
+
+        let mut input = r#"
+        "Hello, World!"
+        42
+        3.14
+        true
+        "#.chars();
+
+        let result = parser(input.by_ref());
+        assert_eq!(
+            result,
+            Ok(Val::Str("Hello, World!".to_string()))
+        );
+
+        let result = parser(input.by_ref());
+        assert_eq!(
+            result,
+            Ok(Val::Int(42))
+        );
+
+        let result = parser(input.by_ref());
+        assert_eq!(
+            result,
+            Ok(Val::Double(3.14))
+        );
+
+        let result = parser(input.by_ref());
+        assert_eq!(
+            result,
+            Ok(Val::Bool(true))
+        );
+
+
+        let result = parser(input.by_ref());
+        assert_eq!(
+            result,
+            Err(ProcessInputError::EmptyInput)
+        );
+
     }
 }

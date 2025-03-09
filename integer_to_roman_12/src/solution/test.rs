@@ -4,10 +4,10 @@ use super::solution::*;
 
 #[test]
 fn integer_to_roman_12() -> Result<(), String> {
-    use leetcode_lib::parser::{Value, ValueIterator, ProcessInputError, read_input};
+    use leetcode_lib::parser::{Val, ValIter, ProcessInputError, read_input};
     
-    ValueIterator::new(read_input("input.txt")?)
-        .collect::<Result<Vec<Value>, ProcessInputError>>()
+    ValIter::new(read_input("input.txt")?)
+        .collect::<Result<Vec<Val>, ProcessInputError>>()
         .map_err(|e| e.to_string())?
         .chunks_exact(2)
         .try_for_each(|caso_teste| -> Result<(), String> {

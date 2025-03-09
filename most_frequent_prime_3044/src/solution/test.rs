@@ -1,16 +1,14 @@
-use std::f32::consts::E;
-
 #[cfg(test)]
 
 use super::solution::*;
 
 #[test]
 fn most_frequent_prime() -> Result<(), String> {
-    use leetcode_lib::parser::{Value, ValueIterator, ProcessInputError, read_input};
+    use leetcode_lib::parser::{Val, ValIter, ProcessInputError, read_input};
     let chars = read_input("input.txt")?;
     
-    ValueIterator::new(chars)
-        .collect::<Result<Vec<Value>, ProcessInputError>>()
+    ValIter::new(chars)
+        .collect::<Result<Vec<Val>, ProcessInputError>>()
         .map_err(|e| e.to_string())?
         .chunks_exact(2)
         .try_for_each(|caso_teste| -> Result<(), String> {

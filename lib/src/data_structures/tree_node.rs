@@ -1,5 +1,5 @@
 use std::{rc::Rc, cell::RefCell};
-use crate::parser::Value;
+use crate::parser::Val;
 
 pub type TreeNodeRef = Rc<RefCell<TreeNode>>;
 
@@ -21,14 +21,14 @@ impl TreeNode {
     }
 }
 
-impl FromIterator<Value> for TreeNodeRef {
-    fn from_iter<I: IntoIterator<Item=Value>>(iter: I) -> TreeNodeRef {
+impl FromIterator<Val> for TreeNodeRef {
+    fn from_iter<I: IntoIterator<Item=Val>>(iter: I) -> TreeNodeRef {
         let mut iter = iter.into_iter();
 
         let first: TreeNode = match iter.next() {
             None => return Rc::new(RefCell::new(TreeNode::new(0))),
             Some(x) => { TreeNode::new(match x {
-                Value::Int(v) => v as i32,
+                Val::Int(v) => v as i32,
                 _ => panic!("Invalid input")
             }) }
         };
@@ -43,8 +43,8 @@ impl FromIterator<Value> for TreeNodeRef {
 
         for x in iter {
             let node = match x {
-                Value::Int(v) => Some(Rc::new(RefCell::new(TreeNode::new(v as i32)))),
-                Value::None => None,
+                Val::Int(v) => Some(Rc::new(RefCell::new(TreeNode::new(v as i32)))),
+                Val::None => None,
                 _ => panic!("Invalid input")
             };
             new_layer.push(node.clone());
