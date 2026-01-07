@@ -15,11 +15,11 @@ impl ListNode {
         }
     }
 
-    pub fn iter(&self) -> ListNodeIterRef {
+    pub fn iter(&self) -> ListNodeIterRef<'_> {
         ListNodeIterRef { current: Some(self) }
     }
 
-    pub fn iter_mut(&mut self) -> ListNodeIterRefMut {
+    pub fn iter_mut(&mut self) -> ListNodeIterRefMut<'_> {
         ListNodeIterRefMut { current: Some(self) }
     }
 }
