@@ -1,43 +1,44 @@
 use std::ops::Deref;
+use std::fmt::Display;
 
 #[derive(PartialEq, Eq, Clone, Debug)]
-pub struct ListNode {
-    pub val: i32,
-    pub next: Option<Box<ListNode>>
+pub struct ListNode<T: Eq + PartialEq + Clone + Display> {
+    pub val: T,
+    pub next: Option<Box<ListNode<T>>>
 }
 
-impl ListNode {
+impl<T: Eq + PartialEq + Clone + Display> ListNode<T> {
     #[inline]
-    pub fn new(val: i32) -> Self {
+    pub fn new(val: T) -> Self {
         ListNode {
             next: None,
             val
         }
     }
 
-    pub fn iter(&self) -> ListNodeIterRef<'_> {
+    pub fn iter(&self) -> ListNodeIterRef<'_, T> {
         ListNodeIterRef { current: Some(self) }
     }
 
-    pub fn iter_mut(&mut self) -> ListNodeIterRefMut<'_> {
+    pub fn iter_mut(&mut self) -> ListNodeIterRefMut<'_, T> {
         ListNodeIterRefMut { current: Some(self) }
     }
 }
 
-pub struct ListNodeIterRefMut<'a> {
-    current: Option<&'a mut ListNode>,
+pub struct ListNodeIterRefMut<'a, T: Eq + PartialEq + Clone + Display> {
+    current: Option<&'a mut ListNode<T>>,
 }
 
-pub struct ListNodeIterRef<'a> {
-    current: Option<&'a ListNode>,
+pub struct ListNodeIterRef<'a, T: Eq + PartialEq + Clone + Display> {
+    current: Option<&'a ListNode<T>>,
 }
 
-pub struct ListNodeIter {
-    current: Option<Box<ListNode>>,
+pub struct ListNodeIter<T: Eq + PartialEq + Clone + Display> {
+    current: Option<Box<ListNode<T>>>,
 }
 
-impl<'a> Iterator for ListNodeIterRefMut<'a> {
-    type Item = &'a mut i32;
+impl<'a, T: Eq + PartialEq + Clone + Display> Iterator for ListNodeIterRefMut<'a, T> {
+    type Item = &'a mut T;
 
     fn next(&mut self) -> Option<Self::Item> {
         match self.current.take() {
@@ -53,8 +54,8 @@ impl<'a> Iterator for ListNodeIterRefMut<'a> {
     }
 }
 
-impl<'a> Iterator for ListNodeIterRef<'a> {
-    type Item = &'a i32;
+impl<'a, T: Eq + PartialEq + Clone + Display> Iterator for ListNodeIterRef<'a, T> {
+    type Item = &'a T;
 
     fn next(&mut self) -> Option<Self::Item> {
         let current = self.current.take();
@@ -71,10 +72,10 @@ impl<'a> Iterator for ListNodeIterRef<'a> {
     }
 }
 
-impl Iterator for ListNodeIter {
-    type Item = i32;
+impl<T: Eq + PartialEq + Clone + Display> Iterator for ListNodeIter<T> {
+    type Item = T;
 
-    fn next(&mut self) -> Option<i32> {
+    fn next(&mut self) -> Option<T> {
         match (*self).current.take() {
             None => None,
             Some(c) => {
@@ -85,23 +86,23 @@ impl Iterator for ListNodeIter {
     }
 }
 
-impl IntoIterator for ListNode {
-    type Item = i32;
-    type IntoIter = ListNodeIter;
+impl<T: Eq + PartialEq + Clone + Display> IntoIterator for ListNode<T> {
+    type Item = T;
+    type IntoIter = ListNodeIter<T>;
     
-    fn into_iter(self) -> ListNodeIter {
+    fn into_iter(self) -> ListNodeIter<T> {
         ListNodeIter { current: Some(Box::new(self)) }
     }
 }
 
-impl FromIterator<i32> for ListNode {
-    fn from_iter<I: IntoIterator<Item=i32>>(iter: I) -> Self {
+impl<T: Eq + PartialEq + Clone + Display> FromIterator<T> for ListNode<T> {
+    fn from_iter<I: IntoIterator<Item=T>>(iter: I) -> Self {
         let list = iter
             .into_iter()
-            .collect::<Vec<i32>>()
+            .collect::<Vec<T>>()
             .into_iter()
             .rev()
-            .fold(None, |acc: Option<Box<ListNode>>, x| {
+            .fold(None, |acc: Option<Box<ListNode<T>>>, x| {
                 let mut node = ListNode::new(x);
                 node.next = acc;
                 Some(Box::new(node))
@@ -111,17 +112,16 @@ impl FromIterator<i32> for ListNode {
     }
 }
 
-impl ToString for ListNode {
-    fn to_string(&self) -> String {
-        let mut result = "[".to_string();
+impl<T: Eq + PartialEq + Clone + Display> Display for ListNode<T> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "[")?;
         for (index, val) in self.iter().enumerate() {
             if index != 0 {
-                result.push_str(",");
+                write!(f, ",")?;
             }
-            result.push_str(&val.to_string());
+            write!(f, "{}", val)?;
         }
-        result.push_str("]");
-        result
+        write!(f, "]")
     }
 }
 
