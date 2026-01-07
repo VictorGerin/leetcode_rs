@@ -1,8 +1,3 @@
-// AI_GENERATED_CODE_START
-// Descrição: Estrutura Solution com método get_concatenation para concatenar array com ele mesmo
-// Gerado por: Cursor AI
-// Versão: Rust edition 2021
-// AI_GENERATED_CODE_END
 pub struct Solution;
 
 impl Solution {

@@ -49,6 +49,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "maximum_product_of_splitted_binary_tree_1339"
+version = "0.1.0"
+dependencies = [
+ "leetcode_lib",
+]
+
+[[package]]
 name = "most_frequent_prime_3044"
 version = "0.1.0"
 dependencies = [
@@ -64,6 +71,13 @@ dependencies = [
 
 [[package]]
 name = "plus_one_66"
+version = "0.1.0"
+dependencies = [
+ "leetcode_lib",
+]
+
+[[package]]
+name = "shuffle_the_array_1470"
 version = "0.1.0"
 dependencies = [
  "leetcode_lib",

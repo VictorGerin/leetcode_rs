@@ -1,0 +1,8 @@
+[package]
+name = "maximum_product_of_splitted_binary_tree_1339"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+leetcode_lib = { path = "../lib" }
+

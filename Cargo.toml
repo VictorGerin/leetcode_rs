@@ -50,6 +50,14 @@ path = "three_sum_15/src/main.rs"
 name = "concatenation_of_array_1929"
 path = "concatenation_of_array_1929/src/main.rs"
 
+[[bin]]
+name = "shuffle_the_array_1470"
+path = "shuffle_the_array_1470/src/main.rs"
+
+[[bin]]
+name = "maximum_product_of_splitted_binary_tree_1339"
+path = "maximum_product_of_splitted_binary_tree_1339/src/main.rs"
+
 [workspace]
 members = [
     "lib",
@@ -64,4 +72,6 @@ members = [
     "sum_two_numbers",
     "three_sum_15",
     "concatenation_of_array_1929",
+    "shuffle_the_array_1470",
+    "maximum_product_of_splitted_binary_tree_1339",
 ]
