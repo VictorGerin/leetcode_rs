@@ -46,6 +46,10 @@ path = "sum_two_numbers/src/main.rs"
 name = "three_sum_15"
 path = "three_sum_15/src/main.rs"
 
+[[bin]]
+name = "concatenation_of_array_1929"
+path = "concatenation_of_array_1929/src/main.rs"
+
 [workspace]
 members = [
     "lib",
@@ -59,4 +63,5 @@ members = [
     "sort_array_912",
     "sum_two_numbers",
     "three_sum_15",
+    "concatenation_of_array_1929",
 ]

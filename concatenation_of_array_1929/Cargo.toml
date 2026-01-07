@@ -1,0 +1,8 @@
+[package]
+name = "concatenation_of_array_1929"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+leetcode_lib = { path = "../lib" }
+
