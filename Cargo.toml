@@ -34,6 +34,10 @@ path = "longest_word_in_dictionary_524/src/main.rs"
 name = "number_of_ways_where_square_of_number_is_equal_to_product_1577"
 path = "number_of_ways_where_square_of_number_is_equal_to_product_1577/src/main.rs"
 
+[[bin]]
+name = "plus_one_66"
+path = "plus_one_66/src/main.rs"
+
 [workspace]
 members = [
     "lib",
@@ -43,5 +47,6 @@ members = [
     "maximum_ascending_subarray_sum_1800",
     "sort_array_912",
     "longest_word_in_dictionary_524",
-    "number_of_ways_where_square_of_number_is_equal_to_product_1577"
+    "number_of_ways_where_square_of_number_is_equal_to_product_1577",
+    "plus_one_66"
 ] 

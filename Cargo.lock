@@ -49,6 +49,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "plus_one_66"
+version = "0.1.0"
+dependencies = [
+ "leetcode_lib",
+]
+
+[[package]]
 name = "sort_array_912"
 version = "0.1.0"
 dependencies = [
