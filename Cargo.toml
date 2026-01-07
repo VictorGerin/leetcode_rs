@@ -38,6 +38,10 @@ path = "number_of_ways_where_square_of_number_is_equal_to_product_1577/src/main.
 name = "plus_one_66"
 path = "plus_one_66/src/main.rs"
 
+[[bin]]
+name = "add_binary_67"
+path = "add_binary_67/src/main.rs"
+
 [workspace]
 members = [
     "lib",
@@ -48,5 +52,6 @@ members = [
     "sort_array_912",
     "longest_word_in_dictionary_524",
     "number_of_ways_where_square_of_number_is_equal_to_product_1577",
-    "plus_one_66"
+    "plus_one_66",
+    "add_binary_67"
 ] 

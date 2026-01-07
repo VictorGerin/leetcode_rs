@@ -3,6 +3,13 @@
 version = 4
 
 [[package]]
+name = "add_binary_67"
+version = "0.1.0"
+dependencies = [
+ "leetcode_lib",
+]
+
+[[package]]
 name = "integer_to_roman_12"
 version = "0.1.0"
 dependencies = [
