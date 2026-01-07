@@ -75,3 +75,10 @@ version = "0.1.0"
 dependencies = [
  "leetcode_lib",
 ]
+
+[[package]]
+name = "three_sum_15"
+version = "0.1.0"
+dependencies = [
+ "leetcode_lib",
+]
