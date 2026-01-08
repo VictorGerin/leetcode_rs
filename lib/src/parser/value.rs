@@ -1,4 +1,5 @@
-use crate::data_structures::{ListNode, TreeNode};
+use std::rc::Rc;
+use crate::data_structures::{ListNode, TreeNode, TreeNodeRef};
 
 use super::{error::ValErr, parser_str};
 
@@ -95,7 +96,14 @@ impl Val {
 
     pub fn as_tree_node(self) -> Result<TreeNode, ValErr>
     {
-        todo!("Implement this method")
+        let vec = self.as_vec().map_err(ValErr::IsNotVec)?;
+        let tree_ref: TreeNodeRef = vec.into_iter().collect();
+        
+        // Extrair TreeNode do Rc<RefCell<TreeNode>>
+        // Como acabamos de criar o TreeNodeRef, não deve haver outras referências
+        Rc::try_unwrap(tree_ref)
+            .map_err(|_| ValErr::IsNotVec(Val::None))
+            .map(|ref_cell| ref_cell.into_inner())
     }
 
 }
