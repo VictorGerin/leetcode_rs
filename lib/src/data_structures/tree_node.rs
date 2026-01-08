@@ -21,6 +21,53 @@ impl TreeNode {
     }
 }
 
+// Implementação de Drop iterativo para evitar stack overflow em árvores profundas
+impl Drop for TreeNode {
+    fn drop(&mut self) {
+        // Usar uma stack na heap para processar os nós iterativamente
+        // ao invés de recursivamente, evitando stack overflow
+        let mut stack: Vec<TreeNodeRef> = Vec::new();
+        
+        // Extrair os filhos do nó atual antes do drop padrão
+        // Isso evita que o drop padrão cause recursão
+        if let Some(left) = self.left.take() {
+            stack.push(left);
+        }
+        
+        if let Some(right) = self.right.take() {
+            stack.push(right);
+        }
+        
+        // Processar todos os nós na stack iterativamente
+        while let Some(node_ref) = stack.pop() {
+            // Tentar obter o RefCell interno se este for o último Rc
+            // Se houver outras referências, apenas decrementa o contador
+            if let Ok(cell) = Rc::try_unwrap(node_ref) {
+                // Este é o último Rc, podemos dropar o RefCell
+                let mut node = cell.into_inner();
+                
+                // Extrair os filhos antes do drop recursivo
+                if let Some(left) = node.left.take() {
+                    stack.push(left);
+                }
+                
+                if let Some(right) = node.right.take() {
+                    stack.push(right);
+                }
+                
+                // O drop padrão do TreeNode será chamado automaticamente aqui
+                // Mas como já removemos left e right, não haverá recursão
+            }
+            // Se houver outras referências ao Rc, ele apenas decrementa o contador
+            // e não faz drop do conteúdo, então não há problema de recursão
+        }
+        
+        // O drop padrão do TreeNode será chamado automaticamente
+        // Mas como já removemos left e right com take(), não há mais referências
+        // para causar recursão
+    }
+}
+
 impl FromIterator<Val> for TreeNodeRef {
     fn from_iter<I: IntoIterator<Item=Val>>(iter: I) -> TreeNodeRef {
         let mut iter = iter.into_iter();
