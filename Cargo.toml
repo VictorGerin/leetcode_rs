@@ -62,6 +62,10 @@ path = "maximum_product_of_splitted_binary_tree_1339/src/main.rs"
 name = "max_consecutive_ones_485"
 path = "max_consecutive_ones_485/src/main.rs"
 
+[[bin]]
+name = "set_mismatch_645"
+path = "set_mismatch_645/src/main.rs"
+
 [workspace]
 members = [
     "lib",
@@ -79,4 +83,5 @@ members = [
     "shuffle_the_array_1470",
     "maximum_product_of_splitted_binary_tree_1339",
     "max_consecutive_ones_485",
+    "set_mismatch_645",
 ]
