@@ -51,6 +51,10 @@ impl FromIterator<Val> for TreeNodeRef {
 
             let max_layer = 2_usize.pow(current_deep);
 
+            while let None =  &current[current_horizontal_index / 2] {
+                current_horizontal_index += 1
+            }
+
             if let Some(father) = &mut current[current_horizontal_index / 2] {
                 if current_horizontal_index % 2 == 0 {
                     father.borrow_mut().left = node;
