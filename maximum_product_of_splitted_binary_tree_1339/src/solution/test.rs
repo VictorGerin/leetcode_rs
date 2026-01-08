@@ -1,12 +1,10 @@
 #[cfg(test)]
 
 use super::solution::*;
-use std::rc::Rc;
-use std::cell::RefCell;
-use leetcode_lib::data_structures::TreeNode;
 
 #[test]
 fn maximum_product_of_splitted_binary_tree_1339() -> Result<(), String> {
+    use leetcode_lib::data_structures::TreeNodeRef;
     use leetcode_lib::parser::{Val, ValIter, ProcessInputError, read_input};
     
     ValIter::new(read_input("input.txt")?)
@@ -24,7 +22,7 @@ fn maximum_product_of_splitted_binary_tree_1339() -> Result<(), String> {
             let root = if tree_vals.is_empty() {
                 None
             } else {
-                let tree_ref: Rc<RefCell<TreeNode>> = tree_vals.into_iter().collect();
+                let tree_ref: TreeNodeRef = tree_vals.into_iter().collect();
                 Some(tree_ref)
             };
 
