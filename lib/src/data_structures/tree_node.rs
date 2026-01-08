@@ -1,4 +1,4 @@
-use std::{rc::Rc, cell::RefCell};
+use std::{rc::Rc, cell::RefCell, collections::VecDeque};
 use crate::parser::Val;
 
 pub type TreeNodeRef = Rc<RefCell<TreeNode>>;
@@ -25,54 +25,58 @@ impl FromIterator<Val> for TreeNodeRef {
     fn from_iter<I: IntoIterator<Item=Val>>(iter: I) -> TreeNodeRef {
         let mut iter = iter.into_iter();
 
-        let first: TreeNode = match iter.next() {
-            None => return Rc::new(RefCell::new(TreeNode::new(0))),
-            Some(x) => { TreeNode::new(match x {
-                Val::Int(v) => v as i32,
-                _ => panic!("Invalid input")
-            }) }
-        };
-
-        let first = Some(Rc::new(RefCell::new(first)));
-        
-        let mut current_deep = 1;
-        let mut current_horizontal_index = 0;
-        let mut current: Vec<Option<TreeNodeRef>> = vec![];
-        let mut new_layer: Vec<Option<TreeNodeRef>> = vec![];
-        current.push(first.clone());
-
-        for x in iter {
-            let node = match x {
+        // Função helper: converte Val em Option<TreeNodeRef>
+        let val_to_node = |val: Val| -> Option<TreeNodeRef> {
+            match val {
                 Val::Int(v) => Some(Rc::new(RefCell::new(TreeNode::new(v as i32)))),
                 Val::None => None,
-                _ => panic!("Invalid input")
+                _ => panic!("Invalid input: expected integer or null")
+            }
+        };
+
+        // Criar a raiz a partir do primeiro elemento
+        let root = match iter.next() {
+            None => Rc::new(RefCell::new(TreeNode::new(0))),
+            Some(val) => val_to_node(val).unwrap_or_else(|| Rc::new(RefCell::new(TreeNode::new(0)))),
+        };
+        
+        // Fila para processar nós em nível (level-order)
+        let mut queue: VecDeque<Option<TreeNodeRef>> = VecDeque::new();
+        queue.push_back(Some(root.clone()));
+
+        // Processar os elementos restantes do iterador
+        // No formato LeetCode level-order:
+        // - Apenas nós não-null na fila consomem elementos (2 por nó: left e right)
+        // - Nós null na fila são ignorados (não consomem elementos)
+        while let Some(parent_opt) = queue.pop_front() {
+            // Se o pai é None, ignoramos (não consome elementos do iterador)
+            let Some(parent) = parent_opt else {
+                continue;
             };
-            new_layer.push(node.clone());
+        
+            // Pegar os próximos 2 elementos: left e right
+            // Se o iterador se esgotar, paramos
+            let left_val = match iter.next() {
+                Some(val) => val,
+                None => break,
+            };
 
-            let max_layer = 2_usize.pow(current_deep);
+            // Processar filho esquerdo
+            let left_node = val_to_node(left_val);
+            parent.borrow_mut().left = left_node.clone();
+            queue.push_back(left_node);
 
-            while let None =  &current[current_horizontal_index / 2] {
-                current_horizontal_index += 1
-            }
+            let right_val = match iter.next() {
+                Some(val) => val,
+                None => break
+            };
 
-            if let Some(father) = &mut current[current_horizontal_index / 2] {
-                if current_horizontal_index % 2 == 0 {
-                    father.borrow_mut().left = node;
-                } else {
-                    father.borrow_mut().right = node;
-                }
-            }
-
-            current_horizontal_index += 1;
-
-            if current_horizontal_index == max_layer {
-                current_horizontal_index = 0;
-                current_deep += 1;
-                current = new_layer;
-                new_layer = vec![];
-            }
+            // Processar filho direito
+            let right_node = val_to_node(right_val);
+            parent.borrow_mut().right = right_node.clone();
+            queue.push_back(right_node);
         }
 
-        first.unwrap()
+        root
     }
 } 
