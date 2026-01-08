@@ -13,16 +13,10 @@ fn maximum_product_of_splitted_binary_tree_1339() -> Result<(), String> {
         .map_err(|e| e.to_string())?
         .chunks_exact(2)
         .try_for_each(|caso_teste| -> Result<(), String> {
-            // Primeiro valor: array de valores da árvore (pode conter inteiros e nulls)
-            let tree_vals = caso_teste[0].clone()
-                .as_vec()
-                .map_err(|x| format!("Expected array, got {:?}", x))?;
 
             // Converter Vec<Val> para TreeNodeRef usando collect()
             // FromIterator<Val> for TreeNodeRef espera um iterador de Val
-            let root = if tree_vals.is_empty() {
-                None
-            } else {
+            let root = {
                 let tree = caso_teste[0].clone()
                     .as_tree_node()
                     .map_err(|e| format!("Failed to convert to TreeNode: {:?}", e))?;

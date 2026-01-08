@@ -42,6 +42,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "max_consecutive_ones_485"
+version = "0.1.0"
+dependencies = [
+ "leetcode_lib",
+]
+
+[[package]]
 name = "maximum_ascending_subarray_sum_1800"
 version = "0.1.0"
 dependencies = [
