@@ -98,6 +98,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "smallest_subtree_with_all_deepest_nodes_865"
+version = "0.1.0"
+dependencies = [
+ "leetcode_lib",
+]
+
+[[package]]
 name = "sort_array_912"
 version = "0.1.0"
 dependencies = [
