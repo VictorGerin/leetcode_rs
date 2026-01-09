@@ -32,7 +32,7 @@ impl Solution {
         // No conjunto natural: temos 1, 2, 3, ..., a, b, ..., n (onde cada número aparece uma vez)
         // Ao fazer XOR de ambos, os números que aparecem uma vez em cada conjunto se cancelam
         // Resta apenas: a ^ b (pois "a" aparece duas vezes no array e "b" não aparece)
-        let a_xor_b = nums.iter().copied().fold(Self::xor_sum_of_n(nums.len() as i32), |acc, x| acc ^ x);
+        let a_xor_b = nums.iter().fold(Self::xor_sum_of_n(nums.len() as i32), |acc, x| acc ^ *x);
 
         // Qualquer bit 1 em a_xor_b indica um bit que "a" tem e "b" não tem, ou vice-versa
 
