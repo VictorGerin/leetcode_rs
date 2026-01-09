@@ -70,6 +70,10 @@ path = "set_mismatch_645/src/main.rs"
 name = "ways_to_express_integer_2787"
 path = "ways_to_express_integer_2787/src/main.rs"
 
+[[bin]]
+name = "find_the_duplicate_number_287"
+path = "find_the_duplicate_number_287/src/main.rs"
+
 [workspace]
 members = [
     "lib",
@@ -89,4 +93,5 @@ members = [
     "max_consecutive_ones_485",
     "set_mismatch_645",
     "ways_to_express_integer_2787",
+    "find_the_duplicate_number_287",
 ]

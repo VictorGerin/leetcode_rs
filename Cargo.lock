@@ -17,6 +17,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "find_the_duplicate_number_287"
+version = "0.1.0"
+dependencies = [
+ "leetcode_lib",
+]
+
+[[package]]
 name = "integer_to_roman_12"
 version = "0.1.0"
 dependencies = [
