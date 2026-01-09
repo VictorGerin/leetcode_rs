@@ -1,0 +1,7 @@
+[package]
+name = "smallest_subtree_with_all_deepest_nodes_865"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+leetcode_lib = { path = "../lib" }

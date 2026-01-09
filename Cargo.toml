@@ -74,6 +74,10 @@ path = "ways_to_express_integer_2787/src/main.rs"
 name = "find_the_duplicate_number_287"
 path = "find_the_duplicate_number_287/src/main.rs"
 
+[[bin]]
+name = "smallest_subtree_with_all_deepest_nodes_865"
+path = "smallest_subtree_with_all_deepest_nodes_865/src/main.rs"
+
 [workspace]
 members = [
     "lib",
@@ -94,4 +98,5 @@ members = [
     "set_mismatch_645",
     "ways_to_express_integer_2787",
     "find_the_duplicate_number_287",
+    "smallest_subtree_with_all_deepest_nodes_865"
 ]
