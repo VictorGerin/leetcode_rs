@@ -1,6 +1,16 @@
 pub struct Solution;
 
 impl Solution {
+
+    fn xor_sum_of_n(n: i32) -> i32 {
+        match n % 4 {
+            0 => n,
+            1 => 1,
+            2 => n + 1,
+            3 => 0,
+            _ => unreachable!(), // v.len() % 4 sempre retorna 0, 1, 2 ou 3
+        }
+    }
     pub fn find_error_nums(nums: Vec<i32>) -> Vec<i32> {
 
         // Seja "a" o número repetido e "b" o número que está faltando
@@ -11,7 +21,7 @@ impl Solution {
         // No conjunto natural: temos 1, 2, 3, ..., a, b, ..., n (onde cada número aparece uma vez)
         // Ao fazer XOR de ambos, os números que aparecem uma vez em cada conjunto se cancelam
         // Resta apenas: a ^ b (pois "a" aparece duas vezes no array e "b" não aparece)
-        let a_xor_b = nums.iter().copied().chain(1..n+1).fold(0, |acc, x| acc ^ x);
+        let a_xor_b = nums.iter().copied().fold(Self::xor_sum_of_n(nums.len() as i32), |acc, x| acc ^ x);
 
         // Qualquer bit 1 em a_xor_b indica um bit que "a" tem e "b" não tem, ou vice-versa
 
