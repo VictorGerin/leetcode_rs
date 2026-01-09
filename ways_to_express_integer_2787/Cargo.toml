@@ -1,0 +1,7 @@
+[package]
+name = "ways_to_express_integer_2787"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+leetcode_lib = { path = "../lib" }

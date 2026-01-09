@@ -66,6 +66,10 @@ path = "max_consecutive_ones_485/src/main.rs"
 name = "set_mismatch_645"
 path = "set_mismatch_645/src/main.rs"
 
+[[bin]]
+name = "ways_to_express_integer_2787"
+path = "ways_to_express_integer_2787/src/main.rs"
+
 [workspace]
 members = [
     "lib",
@@ -84,4 +88,5 @@ members = [
     "maximum_product_of_splitted_binary_tree_1339",
     "max_consecutive_ones_485",
     "set_mismatch_645",
+    "ways_to_express_integer_2787",
 ]
