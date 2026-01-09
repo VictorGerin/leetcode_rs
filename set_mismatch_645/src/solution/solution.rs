@@ -2,13 +2,24 @@ pub struct Solution;
 
 impl Solution {
 
+    /// Calcula o XOR de todos os números naturais de 1 até n.
+    ///
+    /// Utiliza uma otimização baseada em um padrão cíclico observado no resultado
+    /// do XOR de números consecutivos. O resultado depende apenas do resto da
+    /// divisão de n por 4, permitindo calcular em O(1) ao invés de O(n).
+    ///
+    /// Padrão observado:
+    /// - Se n % 4 == 0: resultado = n
+    /// - Se n % 4 == 1: resultado = 1
+    /// - Se n % 4 == 2: resultado = n + 1
+    /// - Se n % 4 == 3: resultado = 0
     fn xor_sum_of_n(n: i32) -> i32 {
         match n % 4 {
             0 => n,
             1 => 1,
             2 => n + 1,
             3 => 0,
-            _ => unreachable!(), // v.len() % 4 sempre retorna 0, 1, 2 ou 3
+            _ => unreachable!(), // n % 4 sempre retorna 0, 1, 2 ou 3
         }
     }
     pub fn find_error_nums(nums: Vec<i32>) -> Vec<i32> {
