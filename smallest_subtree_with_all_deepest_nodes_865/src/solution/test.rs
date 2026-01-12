@@ -2,22 +2,6 @@
 
 use super::solution::*;
 
-// Helper function para comparar duas árvores
-fn trees_equal(a: &Option<leetcode_lib::data_structures::TreeNodeRef>, 
-               b: &Option<leetcode_lib::data_structures::TreeNodeRef>) -> bool {
-    match (a, b) {
-        (None, None) => true,
-        (Some(a_ref), Some(b_ref)) => {
-            let a_node = a_ref.borrow();
-            let b_node = b_ref.borrow();
-            a_node.val == b_node.val 
-                && trees_equal(&a_node.left, &b_node.left)
-                && trees_equal(&a_node.right, &b_node.right)
-        },
-        _ => false,
-    }
-}
-
 #[test]
 fn smallest_subtree_with_all_deepest_nodes_865() -> Result<(), String> {
     use std::rc::Rc;
@@ -48,9 +32,20 @@ fn smallest_subtree_with_all_deepest_nodes_865() -> Result<(), String> {
 
             let result = Solution::subtree_with_all_deepest(root.clone());
             
-            // Comparar as árvores resultantes
-            assert!(trees_equal(&result, &expected), 
-                "Expected trees to be equal for input tree");
+            // Comparar as árvores resultantes usando as_post_ordem_vec
+            let result_vec = match &result {
+                Some(ref_node) => ref_node.borrow().as_post_ordem_vec(),
+                None => Vec::new(),
+            };
+            
+            let expected_vec = match &expected {
+                Some(ref_node) => ref_node.borrow().as_post_ordem_vec(),
+                None => Vec::new(),
+            };
+            
+            assert_eq!(result_vec, expected_vec, 
+                "Expected trees to be equal for input tree. Result: {:?}, Expected: {:?}", 
+                result_vec, expected_vec);
 
             Ok(())
         })?;
