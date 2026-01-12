@@ -1,4 +1,4 @@
-use std::{cell::RefCell, collections::HashMap, rc::Rc};
+use std::{cell::RefCell, cmp::Ordering, collections::HashMap};
 
 use leetcode_lib::data_structures::{TreeNode, TreeNodeIterPostOrder, TreeNodeRef};
 
@@ -14,7 +14,7 @@ impl Solution {
 
         let mut deep_map= HashMap::<*const RefCell<TreeNode>, i32>::new();
 
-        for node in TreeNodeIterPostOrder::new(root) {
+        for node in TreeNodeIterPostOrder::new(root.clone()) {
 
             let left_deep = node.borrow().left.as_ref()
                 .map(|l| deep_map.get(&(l.as_ptr() as *const RefCell<TreeNode>)).copied().unwrap())
@@ -24,13 +24,45 @@ impl Solution {
                 .map(|l| deep_map.get(&(l.as_ptr() as *const RefCell<TreeNode>)).copied().unwrap())
                 .unwrap_or(0);
 
-            let node_deep = left_deep + right_deep + 1;
+            let node_deep = left_deep.max(right_deep) + 1;
             deep_map.insert(node.as_ptr() as *const RefCell<TreeNode>, node_deep);
         
-            println!("{:?}", node.borrow().val)
         }
-        // for node in 
-        // TODO: Implementar a solução
-        todo!()
+
+        let mut current_node = root?;
+        Some(loop {
+
+            let left = current_node.borrow().left.as_ref()
+                .map(|l| 
+                    deep_map.get(&(l.as_ptr() as *const RefCell<TreeNode>))
+                    .copied()
+                    .unwrap()
+                )
+                .unwrap_or(0);
+            
+            let right = current_node.borrow().right.as_ref()
+                .map(|r| 
+                    deep_map.get(&(r.as_ptr() as *const RefCell<TreeNode>))
+                    .copied()
+                    .unwrap()
+                )
+                .unwrap_or(0);
+
+
+            current_node = match left.cmp(&right) {
+                Ordering::Less => {
+                    current_node.borrow().right.clone()?
+                }
+                Ordering::Greater => {
+                    current_node.borrow().left.clone()?
+                }
+                Ordering::Equal => {
+                    break current_node;
+                }
+            }
+            
+        })
+
+
     }
 }

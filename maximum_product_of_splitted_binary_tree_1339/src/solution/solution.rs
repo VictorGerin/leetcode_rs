@@ -1,58 +1,9 @@
 use std::{collections::HashMap, rc::Rc};
 use std::cell::RefCell;
-use leetcode_lib::data_structures::{TreeNode, TreeNodeRef};
+use leetcode_lib::data_structures::{TreeNode, TreeNodeIterPostOrder};
 
 pub struct Solution;
 
-enum StackItem {
-    Unvisited(TreeNodeRef),
-    Visited(TreeNodeRef),
-}
-
-pub struct TreeNodeIterPostOrder {
-    stack: Vec<StackItem>,
-}
-
-impl Iterator for TreeNodeIterPostOrder {
-    type Item = TreeNodeRef;
-
-    fn next(&mut self) -> Option<Self::Item> {
-        while let Some(item) = self.stack.pop() {
-            match item {
-                StackItem::Visited(node) => {
-                    // Já processamos os filhos, retornar o nó
-                    return Some(node);
-                }
-                StackItem::Unvisited(node) => {
-                    // Marcar como visitado e empilhar filhos
-                    // Empilhamos na ordem: pai (visited), direito, esquerdo
-                    // Assim processamos: esquerdo, direito, pai (pós-ordem)
-                    self.stack.push(StackItem::Visited(node.clone()));
-                    
-                    if let Some(right) = node.borrow().right.clone() {
-                        self.stack.push(StackItem::Unvisited(right));
-                    }
-                    
-                    if let Some(left) = node.borrow().left.clone() {
-                        self.stack.push(StackItem::Unvisited(left));
-                    }
-                }
-            }
-        }
-        None
-    }
-}
-
-impl TreeNodeIterPostOrder {
-    pub fn new(root: Option<Rc<RefCell<TreeNode>>>) -> Self {
-        Self {
-            stack: match root {
-                Some(root) => vec![StackItem::Unvisited(root)],
-                None => vec![]
-            }
-        }
-    }
-}
 
 impl Solution {
     pub fn max_product(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
