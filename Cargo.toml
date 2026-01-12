@@ -78,6 +78,10 @@ path = "find_the_duplicate_number_287/src/main.rs"
 name = "smallest_subtree_with_all_deepest_nodes_865"
 path = "smallest_subtree_with_all_deepest_nodes_865/src/main.rs"
 
+[[bin]]
+name = "minimum_time_visiting_all_points_1266"
+path = "minimum_time_visiting_all_points_1266/src/main.rs"
+
 [workspace]
 members = [
     "lib",
@@ -98,5 +102,6 @@ members = [
     "set_mismatch_645",
     "ways_to_express_integer_2787",
     "find_the_duplicate_number_287",
-    "smallest_subtree_with_all_deepest_nodes_865"
+    "smallest_subtree_with_all_deepest_nodes_865",
+    "minimum_time_visiting_all_points_1266"
 ]

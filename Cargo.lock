@@ -70,6 +70,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "minimum_time_visiting_all_points_1266"
+version = "0.1.0"
+dependencies = [
+ "leetcode_lib",
+]
+
+[[package]]
 name = "most_frequent_prime_3044"
 version = "0.1.0"
 dependencies = [
