@@ -91,6 +91,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "new_21_game_837"
+version = "0.1.0"
+dependencies = [
+ "leetcode_lib",
+]
+
+[[package]]
 name = "number_of_ways_where_square_of_number_is_equal_to_product_1577"
 version = "0.1.0"
 dependencies = [
