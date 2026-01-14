@@ -63,40 +63,47 @@ impl Solution {
     /// ou menos que n, assim, basta somar
     ///
     pub fn new21_game(n: i32, k: i32, max_pts: i32) -> f64 {
+        // Se k == 0, Alice para imediatamente com 0 pontos
+        if k == 0 {
+            return 1.0;
+        }
 
-        let transsision_prob = 1f64 / max_pts as f64;
+        let transition_prob = 1f64 / max_pts as f64;
+        let mut probability_windows = vec![0f64; max_pts as usize];
+        
+        // P(0) = 1 (condição inicial)
+        probability_windows[0] = 1.0;
 
-        let mut probability_windows = vec![0f64;max_pts as usize];
-
-        for i in 1..=n {
+        // Calculamos P(i) apenas até k + max_pts - 1 (pontuação máxima possível)
+        let max_score = (k + max_pts - 1).min(n);
+        
+        for i in 1..=max_score {
+            // Range válido: j deve satisfazer 0 <= i - j < k
+            // Isso significa: max(1, i - k + 1) <= j <= min(max_pts, i)
+            let start = if i < k { 1 } else { (i - k + 1).max(1) };
+            let end = max_pts.min(i);
             
-            let p_i = (1..=max_pts).fold(0f64, |acc, j| {
-                let prev = i - j;
-                if prev >= k {
-                    acc
-                } else {
+            let p_i = if start <= end {
+                (start..=end).fold(0f64, |acc, j| {
+                    let prev = i - j;
                     let prob_prev = match prev {
-                        x if x < 0 => 0f64,
                         0 => 1f64,
                         x if x >= 1 => probability_windows[(x % max_pts) as usize],
-                        _ => panic!("Valor impossível de x")
+                        _ => 0f64
                     };
-                    acc + prob_prev * transsision_prob
-                }
-            });
+                    acc + prob_prev * transition_prob
+                })
+            } else {
+                0f64
+            };
 
             probability_windows[(i % max_pts) as usize] = p_i;
-
         }
         
         // Calcular a probabilidade de ter n ou menos
-        (k..=n).map(|i| {
-            match i {
-                x if x < 0 => 0f64,
-                0 => 1f64,
-                x if x >= 1 => probability_windows[(x % max_pts) as usize],
-                _ => panic!("Valor impossível de x")
-            }
+        // Só somamos os estados finais (k <= i <= min(n, k+max_pts-1))
+        (k..=n.min(k + max_pts - 1)).map(|i| {
+            probability_windows[(i % max_pts) as usize]
         }).sum()
     }
 }
