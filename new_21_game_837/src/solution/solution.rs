@@ -1,45 +1,5 @@
 pub struct Solution;
 
-
-enum StackItem {
-    Unvisited(i32),
-    Visited(i32),
-}
-pub struct PITreeNodeIterPostOrder {
-    stack: Vec<StackItem>,
-    max_pts: i32
-}
-
-impl Iterator for PITreeNodeIterPostOrder {
-    type Item = i32;
-    
-    fn next(&mut self) -> Option<Self::Item> {
-        while let Some(item) = self.stack.pop() {
-            
-            match item {
-                StackItem::Visited(item) => {
-                    return Some(item);
-                },
-                StackItem::Unvisited(item) => {
-                    
-                    self.stack.push(StackItem::Visited(item));
-
-                    for i in 1..self.max_pts {
-                        let diff = item - i;
-                        if diff > 0 {
-                            self.stack.push(StackItem::Unvisited(diff));
-                        }
-                    }
-
-                }
-            }
-
-        }
-        None
-    }
-} 
-
-
 impl Solution {
     ///
     /// Explicação inicial metemática do problema:
@@ -58,7 +18,7 @@ impl Solution {
     /// probabilidades de está em "i-j" "P(i-j)" vezes a probabilidde de chegar em i dado
     /// que "i-j" ocorreu "P(i|i-j)" onde 1 <= j <= maxPts ou seja:
     /// 
-    /// P(i) = SUM( P(i-j) * P(i|i-j) ), 0 <= j <= maxPts
+    /// P(i) = SUM( P(i-j) * P(i|i-j) ), 1 <= j <= maxPts
     /// 
     /// Vamos Analisar a equação:
     ///     P(i) é o que queremos encontrar não temos muito o que falar sobre.
@@ -80,7 +40,7 @@ impl Solution {
     /// que 0 (zero) é impossível 0% pois o valor acomulado sempre aumenta nunca diminiu !
     /// 
     /// Sabendo P(0) e P(i | i-j) podemos executar a equação de P(i) para i = 1
-    /// P(1) = P(0) * P(i|0) + P(-1)*P(i|-1) + ... + P(-maxPts) * P(i|-maxPts)
+    /// P(1) = P(0) * P(1|0) + P(-1)*P(1|-1) + ... + P(-maxPts) * P(1|-maxPts)
     /// Vamos notar que P(i | i-j) é uma constante e por tanto pode ficar fora do somatorio
     /// para a questão e por isso:
     /// P(1) = (1/maxPts) * ( P(0) + P(-1) + ... + P(-maxPts) )
@@ -99,27 +59,44 @@ impl Solution {
     /// por definição é zero "P(k+1 | k) = 0" e não mais 1/maxPts como discutido anteriormente, por
     /// tanto para i > k a equação de P(i) deve levar em consideração essa diferença !
     /// 
-    /// 
-    /// Explicação da IMPLEMENTAÇÂO:
-    /// 
-    /// Vejamos que como a função matemática P(i) é recursiva podemos pensar nela como uma "Árvore" onde cada
-    /// nó possui maxPts filhos P(i-j)
+    /// Veja que no final temos a probabilidade de P(n) ocorrer mas a questão pede P(<=n), probabilidade de n
+    /// ou menos que n, assim, basta somar
     ///
     pub fn new21_game(n: i32, k: i32, max_pts: i32) -> f64 {
 
-        let iter = PITreeNodeIterPostOrder {
-            max_pts: 3,
-            stack: vec![StackItem::Unvisited(4)]
-        };
+        let transsision_prob = 1f64 / max_pts as f64;
 
-        let mut P = vec![0; (k + max_pts) as usize];
-        P[0] = 1;
+        let mut probability_windows = vec![0f64;max_pts as usize];
 
-        for i in iter {
-            let mut p = 0;
-            while
+        for i in 1..=n {
+            
+            let p_i = (1..=max_pts).fold(0f64, |acc, j| {
+                let prev = i - j;
+                if prev >= k {
+                    acc
+                } else {
+                    let prob_prev = match prev {
+                        x if x < 0 => 0f64,
+                        0 => 1f64,
+                        x if x >= 1 => probability_windows[(x % max_pts) as usize],
+                        _ => panic!("Valor impossível de x")
+                    };
+                    acc + prob_prev * transsision_prob
+                }
+            });
+
+            probability_windows[(i % max_pts) as usize] = p_i;
+
         }
-
-        todo!()
+        
+        // Calcular a probabilidade de ter n ou menos
+        (k..=n).map(|i| {
+            match i {
+                x if x < 0 => 0f64,
+                0 => 1f64,
+                x if x >= 1 => probability_windows[(x % max_pts) as usize],
+                _ => panic!("Valor impossível de x")
+            }
+        }).sum()
     }
 }
