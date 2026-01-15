@@ -90,6 +90,10 @@ path = "maximum_69_number_1323/src/main.rs"
 name = "new_21_game_837"
 path = "new_21_game_837/src/main.rs"
 
+[[bin]]
+name = "string_to_integer_atoi_8"
+path = "string_to_integer_atoi_8/src/main.rs"
+
 [workspace]
 members = [
     "lib",
@@ -113,5 +117,6 @@ members = [
     "smallest_subtree_with_all_deepest_nodes_865",
     "minimum_time_visiting_all_points_1266",
     "maximum_69_number_1323",
-    "new_21_game_837"
+    "new_21_game_837",
+    "string_to_integer_atoi_8"
 ]

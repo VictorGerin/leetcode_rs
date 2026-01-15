@@ -140,6 +140,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "string_to_integer_atoi_8"
+version = "0.1.0"
+dependencies = [
+ "leetcode_lib",
+]
+
+[[package]]
 name = "sum_two_numbers"
 version = "0.1.0"
 dependencies = [
