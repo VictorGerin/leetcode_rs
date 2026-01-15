@@ -20,17 +20,17 @@ fn maximize_area_of_square_hole_in_grid_2943() -> Result<(), String> {
                 .map_err(|x| format!("Expected integer, got {:?}", x))?;
 
             let h_bars = caso_teste[2].clone()
-                .as_array()
+                .as_vec()
                 .map_err(|x| format!("Expected array, got {:?}", x))?
                 .iter()
-                .map(|v| v.as_int().map_err(|e| format!("Expected integer in array, got {:?}", e)))
+                .map(|v| v.clone().as_int().map_err(|e| format!("Expected integer in array, got {:?}", e)))
                 .collect::<Result<Vec<i32>, String>>()?;
 
             let v_bars = caso_teste[3].clone()
-                .as_array()
+                .as_vec()
                 .map_err(|x| format!("Expected array, got {:?}", x))?
                 .iter()
-                .map(|v| v.as_int().map_err(|e| format!("Expected integer in array, got {:?}", e)))
+                .map(|v| v.clone().as_int().map_err(|e| format!("Expected integer in array, got {:?}", e)))
                 .collect::<Result<Vec<i32>, String>>()?;
 
             let expected = caso_teste[4].clone()
