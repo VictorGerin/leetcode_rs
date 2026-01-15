@@ -1,0 +1,7 @@
+[package]
+name = "coupon_code_validator_3606"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+leetcode_lib = { path = "../lib" }

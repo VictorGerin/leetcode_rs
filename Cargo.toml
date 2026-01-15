@@ -98,6 +98,10 @@ path = "new_21_game_837/src/main.rs"
 name = "string_to_integer_atoi_8"
 path = "string_to_integer_atoi_8/src/main.rs"
 
+[[bin]]
+name = "coupon_code_validator_3606"
+path = "coupon_code_validator_3606/src/main.rs"
+
 [workspace]
 members = [
     "lib",
@@ -123,5 +127,6 @@ members = [
     "maximum_69_number_1323",
     "maximize_area_of_square_hole_in_grid_2943",
     "new_21_game_837",
-    "string_to_integer_atoi_8"
+    "string_to_integer_atoi_8",
+    "coupon_code_validator_3606"
 ]

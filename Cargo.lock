@@ -17,6 +17,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "coupon_code_validator_3606"
+version = "0.1.0"
+dependencies = [
+ "leetcode_lib",
+]
+
+[[package]]
 name = "find_the_duplicate_number_287"
 version = "0.1.0"
 dependencies = [
