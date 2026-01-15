@@ -87,6 +87,10 @@ name = "maximum_69_number_1323"
 path = "maximum_69_number_1323/src/main.rs"
 
 [[bin]]
+name = "maximize_area_of_square_hole_in_grid_2943"
+path = "maximize_area_of_square_hole_in_grid_2943/src/main.rs"
+
+[[bin]]
 name = "new_21_game_837"
 path = "new_21_game_837/src/main.rs"
 
@@ -117,6 +121,7 @@ members = [
     "smallest_subtree_with_all_deepest_nodes_865",
     "minimum_time_visiting_all_points_1266",
     "maximum_69_number_1323",
+    "maximize_area_of_square_hole_in_grid_2943",
     "new_21_game_837",
     "string_to_integer_atoi_8"
 ]

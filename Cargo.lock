@@ -56,6 +56,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "maximize_area_of_square_hole_in_grid_2943"
+version = "0.1.0"
+dependencies = [
+ "leetcode_lib",
+]
+
+[[package]]
 name = "maximum_69_number_1323"
 version = "0.1.0"
 dependencies = [
