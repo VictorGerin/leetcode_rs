@@ -17,6 +17,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "construct_the_minimum_bitwise_array_i_3314"
+version = "0.1.0"
+dependencies = [
+ "leetcode_lib",
+]
+
+[[package]]
 name = "coupon_code_validator_3606"
 version = "0.1.0"
 dependencies = [
@@ -85,6 +92,13 @@ dependencies = [
 
 [[package]]
 name = "maximum_product_of_splitted_binary_tree_1339"
+version = "0.1.0"
+dependencies = [
+ "leetcode_lib",
+]
+
+[[package]]
+name = "maximum_square_area_by_removing_fences_from_a_field_2975"
 version = "0.1.0"
 dependencies = [
  "leetcode_lib",

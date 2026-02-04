@@ -1,0 +1,7 @@
+[package]
+name = "construct_the_minimum_bitwise_array_i_3314"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+leetcode_lib = { path = "../lib" }
