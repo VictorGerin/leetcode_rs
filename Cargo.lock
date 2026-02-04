@@ -189,6 +189,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "trionic_array_ii_3638"
+version = "0.1.0"
+dependencies = [
+ "leetcode_lib",
+]
+
+[[package]]
 name = "ways_to_express_integer_2787"
 version = "0.1.0"
 dependencies = [

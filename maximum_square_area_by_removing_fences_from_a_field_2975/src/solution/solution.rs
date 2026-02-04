@@ -1,4 +1,4 @@
-use std::{collections::HashSet, sync::Arc, vec};
+use std::{collections::HashSet, sync::Arc};
 
 pub struct Solution;
 
