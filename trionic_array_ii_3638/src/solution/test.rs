@@ -16,10 +16,10 @@ fn trionic_array_ii_3638() -> Result<(), String> {
                 .map_err(|x| format!("Expected array of integers, got {:?}", x))?;
 
             let expected = caso_teste[1].clone()
-                .as_vec_int()
+                .as_long()
                 .map_err(|x| format!("Expected array of integers, got {:?}", x))?;
 
-            let result = Solution::trionic_array_ii(nums.clone());
+            let result = Solution::max_sum_trionic(nums.clone());
             assert_eq!(result, expected, "Expected result to be {:?}, but got {:?} for input nums={:?}", expected, result, nums);
 
             Ok(())

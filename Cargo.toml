@@ -3,6 +3,10 @@ name = "leetcode_rust"
 version = "0.1.0"
 edition = "2021"
 
+[profile.dev]
+opt-level = 0
+debug = true
+
 [dependencies]
 leetcode_lib = { path = "./lib" }
 
