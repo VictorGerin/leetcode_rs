@@ -1,15 +1,27 @@
+// 0 1 2 3 4 5 6
+ [ 1,4,2,2,3,1,2 ] 8
+/*
 
+    [1, 4]          R
+    [4, 2]          L
+    [2, 3]          R
+
+
+[
+    Section { _init: 0, end: 1, sum: 5, direction: Rising },
+    Section { _init: 1, end: 2, sum: 6, direction: Lowing },
+    Section { _init: 3, end: 4, sum: 5, direction: Rising },
+    Section { _init: 4, end: 5, sum: 4, direction: Lowing },
+    Section { _init: 5, end: 6, sum: 3, direction: Rising }
+]
+
+
+
+*/
+
+[0,-2,-1,-3, 0, 0, 2,-1] -6
 [395,731,-892,-619,-238,634] 11
-
-[395, 731]       C
-[731, -892]      D
-[-892, -619]     C
-[-619, -238]     C
-[-238, 634]      C
-
-
 [-620,859,-931,-282,-257] -974
 [2,993,-791,-635,-569] -431
 [0,-2,-1,-3, 0, 2,-1] -4
-[ 1,4,2,2,3,1,2 ] 8
 [1,4,2,7] 14
