@@ -9,7 +9,7 @@ enum State {
 
 #[derive(Debug)]
 struct Section {
-    _init: usize,
+    init: usize,
     end: usize,
     sum: i64,
     direction: State
@@ -17,7 +17,7 @@ struct Section {
 
 
 impl Solution {
-
+    
     fn split_arr_in_sections(_nums: &Vec<i32>) -> Vec<Section> {
         let mut sections: Vec<Section> = vec![];
         
@@ -55,7 +55,7 @@ impl Solution {
                     } else if last_val > current_num {
                         current_state = Lowing;
                         sections.push(Section {
-                            _init: first_index,
+                            init: first_index,
                             end: current_index - 1,
                             sum: current_sum,
                             direction: Rising
@@ -64,7 +64,7 @@ impl Solution {
                         current_sum = last_val as i64;
                     } else {
                         sections.push(Section {
-                            _init: first_index,
+                            init: first_index,
                             end: current_index - 1,
                             sum: current_sum,
                             direction: Rising
@@ -82,7 +82,7 @@ impl Solution {
                     if last_val < current_num {
                         current_state = Rising;
                         sections.push(Section {
-                            _init: first_index,
+                            init: first_index,
                             end: current_index - 1,
                             sum: current_sum,
                             direction: Lowing
@@ -95,7 +95,7 @@ impl Solution {
                     } else {
                         current_state = Unknown;
                         sections.push(Section {
-                            _init: first_index,
+                            init: first_index,
                             end: current_index - 1,
                             sum: current_sum,
                             direction: Lowing
@@ -113,7 +113,7 @@ impl Solution {
 
         if current_index != first_index {
             sections.push(Section {
-                _init: first_index,
+                init: first_index,
                 end: current_index - 1,
                 sum: current_sum,
                 direction: current_state
@@ -133,7 +133,7 @@ impl Solution {
         let mut acc = std::i64::MIN;
         for x in sections.windows(3) {
             if !(x[0].direction == Rising && x[1].direction == Lowing && x[2].direction == Rising) || 
-            !(x[0].end == x[1]._init && x[1].end == x[2]._init) {
+            !(x[0].end == x[1].init && x[1].end == x[2].init) {
                 continue;
             }
 
@@ -141,11 +141,11 @@ impl Solution {
             let seccond = &x[1];  //Lowing
             let tird = &x[2];     //Rising
 
-            let len_first = first.end - first._init + 1;
-            let len_third = tird.end - tird._init + 1;
+            let len_first = first.end - first.init + 1;
+            let len_third = tird.end - tird.init + 1;
             let mut prefix_first = vec![0i64; len_first];
             for k in 1..len_first {
-                prefix_first[k] = prefix_first[k - 1] + _nums[first._init + k - 1] as i64;
+                prefix_first[k] = prefix_first[k - 1] + _nums[first.init + k - 1] as i64;
             }
             let mut suffix_third = vec![0i64; len_third];
             for k in 1..len_third {
@@ -155,9 +155,9 @@ impl Solution {
             let seccond_sum = seccond.sum - _nums[seccond.end] as i64;
             let base_first = first.sum - _nums[first.end] as i64;
 
-            for i in 0..=(first.end - first._init - 1) {
+            for i in 0..=(first.end - first.init - 1) {
                 let first_sum_i = base_first - prefix_first[i];
-                for j in 0..=(tird.end - tird._init - 1) {
+                for j in 0..=(tird.end - tird.init - 1) {
                     let trid_sum_j = tird.sum - suffix_third[j];
                     let total = first_sum_i + seccond_sum + trid_sum_j;
                     acc = acc.max(total);
