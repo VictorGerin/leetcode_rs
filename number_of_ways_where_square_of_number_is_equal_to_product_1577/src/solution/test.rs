@@ -18,8 +18,8 @@ fn number_of_ways_where_square_of_number_is_equal_to_product_1577() -> Result<()
                 .map_err(|x| format!("{:?}", x))?;
 
             let nums2 = caso_teste[1].clone()
-            .as_vec_int()
-            .map_err(|x| format!("{:?}", x))?;
+                .as_vec_int()
+                .map_err(|x| format!("{:?}", x))?;
 
             let expected = caso_teste[2].clone()
                 .as_int()
