@@ -118,6 +118,10 @@ path = "construct_the_minimum_bitwise_array_i_3314/src/main.rs"
 name = "trionic_array_ii_3638"
 path = "trionic_array_ii_3638/src/main.rs"
 
+[[bin]]
+name = "minimum_removals_to_balance_array_3634"
+path = "minimum_removals_to_balance_array_3634/src/main.rs"
+
 [workspace]
 members = [
     "lib",
@@ -147,5 +151,6 @@ members = [
     "coupon_code_validator_3606",
     "maximum_square_area_by_removing_fences_from_a_field_2975",
     "construct_the_minimum_bitwise_array_i_3314",
-    "trionic_array_ii_3638"
+    "trionic_array_ii_3638",
+    "minimum_removals_to_balance_array_3634"
 ]

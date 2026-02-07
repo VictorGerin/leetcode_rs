@@ -1,0 +1,7 @@
+[package]
+name = "minimum_removals_to_balance_array_3634"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+leetcode_lib = { path = "../lib" }
